@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+    <defs>
+        <linearGradient id="orbitGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="50%" stop-color="#818cf8" />
+            <stop offset="100%" stop-color="#c084fc" />
+        </linearGradient>
+        <linearGradient id="orbitGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#06b6d4" />
+            <stop offset="60%" stop-color="#a855f7" />
+            <stop offset="100%" stop-color="#e879f9" />
+        </linearGradient>
+        <radialGradient id="nodeCyan" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#e0f2fe" />
+            <stop offset="40%" stop-color="#38bdf8" />
+            <stop offset="100%" stop-color="#0284c7" />
+        </radialGradient>
+        <radialGradient id="nodePurple" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fae8ff" />
+            <stop offset="40%" stop-color="#c084fc" />
+            <stop offset="100%" stop-color="#7e22ce" />
+        </radialGradient>
+        <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Dark background circle for favicon visibility on any tab background -->
+    <rect width="100" height="100" rx="22" fill="#0f172a"/>
+
+    <!-- Outer bounding circle -->
+    <circle cx="50" cy="50" r="40" stroke="url(#orbitGrad1)" stroke-width="2.5" stroke-opacity="0.9" />
+
+    <!-- Orbital ellipses -->
+    <g filter="url(#logoGlow)">
+        <ellipse cx="50" cy="50" rx="34" ry="18" transform="rotate(0 50 50)" stroke="url(#orbitGrad1)" stroke-width="2" fill="none" />
+        <ellipse cx="50" cy="50" rx="34" ry="18" transform="rotate(60 50 50)" stroke="url(#orbitGrad2)" stroke-width="2" fill="none" />
+        <ellipse cx="50" cy="50" rx="34" ry="18" transform="rotate(120 50 50)" stroke="url(#orbitGrad1)" stroke-width="2" fill="none" />
+        <ellipse cx="50" cy="50" rx="34" ry="18" transform="rotate(180 50 50)" stroke="url(#orbitGrad2)" stroke-width="2" fill="none" />
+        <ellipse cx="50" cy="50" rx="34" ry="18" transform="rotate(240 50 50)" stroke="url(#orbitGrad1)" stroke-width="2" fill="none" />
+        <ellipse cx="50" cy="50" rx="34" ry="18" transform="rotate(300 50 50)" stroke="url(#orbitGrad2)" stroke-width="2" fill="none" />
+    </g>
+
+    <!-- Central core -->
+    <circle cx="50" cy="50" r="10" stroke="url(#orbitGrad2)" stroke-width="2.5" fill="#0f172a" />
+    <circle cx="50" cy="50" r="4" fill="#38bdf8" />
+
+    <!-- Outer vertices -->
+    <circle cx="50" cy="10" r="4" fill="url(#nodeCyan)" stroke="#ffffff" stroke-width="1" />
+    <circle cx="84.6" cy="30" r="4" fill="url(#nodeCyan)" stroke="#ffffff" stroke-width="1" />
+    <circle cx="84.6" cy="70" r="4" fill="url(#nodeCyan)" stroke="#ffffff" stroke-width="1" />
+    <circle cx="50" cy="90" r="4" fill="url(#nodePurple)" stroke="#ffffff" stroke-width="1" />
+    <circle cx="15.4" cy="70" r="4" fill="url(#nodePurple)" stroke="#ffffff" stroke-width="1" />
+    <circle cx="15.4" cy="30" r="4" fill="url(#nodePurple)" stroke="#ffffff" stroke-width="1" />
+
+    <!-- Inner vertices -->
+    <circle cx="34" cy="39" r="3.2" fill="url(#nodePurple)" stroke="#ffffff" stroke-width="0.8" />
+    <circle cx="66" cy="39" r="3.2" fill="url(#nodeCyan)" stroke="#ffffff" stroke-width="0.8" />
+    <circle cx="61" cy="61" r="3.2" fill="url(#nodeCyan)" stroke="#ffffff" stroke-width="0.8" />
+    <circle cx="39" cy="61" r="3.2" fill="url(#nodePurple)" stroke="#ffffff" stroke-width="0.8" />
+</svg>
