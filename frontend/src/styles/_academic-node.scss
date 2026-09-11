@@ -1,0 +1,287 @@
+// Node Component
+// ═══════════════════════════════════════════════════════════════
+.academic-node {
+    background-color: $node-white-bg;
+    color: $text-dark;
+    border: 2.5px solid #334155;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    cursor: default;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition:
+        background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .node-label {
+        z-index: 2;
+        position: relative;
+    }
+
+    .node-start-badge {
+        position: absolute;
+        top: -9px;
+        left: -9px;
+        background: $accent-amber;
+        color: #0f172a;
+        font-size: 11px;
+        font-weight: 800;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba($accent-amber, 0.45);
+        z-index: 4;
+        border: 2px solid #ffffff;
+        animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .node-timestamp {
+        position: absolute;
+        top: -10px;
+        right: -14px;
+        background: $bg-dark;
+        color: $text-primary;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 1px 5px;
+        border-radius: 8px;
+        white-space: nowrap;
+        z-index: 3;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .node-key-badge {
+        position: absolute;
+        bottom: -11px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e293b;
+        color: #38bdf8;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 6px;
+        white-space: nowrap;
+        z-index: 3;
+        border: 1.5px solid #38bdf8;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        font-family: 'JetBrains Mono', monospace;
+        animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .node-role-badge {
+        position: absolute;
+        top: -9px;
+        left: -9px;
+        font-size: 10.5px;
+        font-weight: 800;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 4;
+        border: 2px solid #ffffff;
+        font-family: 'JetBrains Mono', monospace;
+        animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        &.source {
+            background: #10b981;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.5);
+        }
+
+        &.sink {
+            background: #ef4444;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.5);
+        }
+
+        &.root {
+            background: #8b5cf6;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(139, 92, 246, 0.5);
+        }
+    }
+
+    .node-tarjan-badge {
+        position: absolute;
+        bottom: -11px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0f172a;
+        color: #38bdf8;
+        font-size: 9.5px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 6px;
+        white-space: nowrap;
+        z-index: 3;
+        border: 1.5px solid #38bdf8;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        font-family: 'JetBrains Mono', monospace;
+        animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .node-scc-indicator {
+        position: absolute;
+        top: -11px;
+        right: -12px;
+        background: rgba(15, 23, 42, 0.9);
+        color: #f8fafc;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 6px;
+        white-space: nowrap;
+        z-index: 4;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    &.scc-colored {
+        border-width: 3px;
+        color: #ffffff;
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .node-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .pulse-ring {
+        width: 72px;
+        height: 72px;
+        border: 2.5px solid $accent-amber;
+        animation: pulse-expand 1.2s ease-out infinite;
+        z-index: 0;
+    }
+
+    .discovery-ring {
+        width: 62px;
+        height: 62px;
+        border: 2px solid rgba($node-gray-bg, 0.4);
+        z-index: 0;
+    }
+
+    &.gray {
+        background-color: $node-gray-bg;
+        border-color: #64748b;
+        color: #fff;
+        box-shadow: 0 0 12px rgba($node-gray-bg, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
+        animation: discover-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    &.black {
+        background-color: $node-black-bg;
+        border-color: $node-black-bg;
+        color: #fff;
+        box-shadow: 0 0 0 3px rgba($node-black-bg, 0.2), 0 4px 16px rgba(0, 0, 0, 0.2);
+        animation: finish-lock 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    &.active {
+        border-color: $accent-amber;
+        border-width: 3px;
+        box-shadow: 0 0 20px rgba($accent-amber, 0.5), 0 0 40px rgba($accent-amber, 0.2);
+    }
+
+    &.active.gray {
+        background-color: #78716c;
+    }
+
+    &.edge-source {
+        border-color: $accent-amber !important;
+        box-shadow: 0 0 0 3px rgba($accent-amber, 0.35), 0 0 18px rgba($accent-amber, 0.6) !important;
+        transform: scale(1.05);
+    }
+
+    // SCC-colored nodes (Kosaraju / Tarjan)
+    &.scc-colored {
+        color: #fff;
+        animation: scc-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+
+// ── Node Keyframes ──
+@keyframes discover-pop {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes finish-lock {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(0.9);
+    }
+
+    60% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes scc-pop {
+    0% {
+        transform: scale(0.85);
+    }
+
+    60% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes badge-pop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
