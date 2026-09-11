@@ -1,0 +1,284 @@
+// Legend
+// ═══════════════════════════════════════════════════════════════
+.legend {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.93);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    z-index: 5;
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        color: #64748b;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        flex-shrink: 0;
+
+        &.white {
+            background: $node-white-bg;
+            border: 2px solid #334155;
+        }
+
+        &.gray {
+            background: $node-gray-bg;
+            border: 2px solid #64748b;
+        }
+
+        &.black {
+            background: $node-black-bg;
+            border: 2px solid $node-black-bg;
+        }
+    }
+
+    .legend-line {
+        width: 22px;
+        height: 3px;
+        border-radius: 2px;
+        flex-shrink: 0;
+        display: inline-block;
+
+        &.tree {
+            background: $edge-tree;
+        }
+
+        &.checked {
+            background: $edge-active;
+        }
+
+        &.relax {
+            background: $edge-relax;
+        }
+
+        &.flow {
+            background: repeating-linear-gradient(90deg, #0f172a, #0f172a 5px, transparent 5px, transparent 9px);
+            height: 3px;
+            border-radius: 0;
+        }
+
+        &.positive-flow {
+            background: #8b5cf6;
+            height: 3px;
+        }
+
+        &.mst {
+            background: #10b981;
+            height: 4px;
+        }
+
+        &.saturated {
+            background: #059669;
+            height: 4px;
+        }
+
+        &.rejected {
+            background: repeating-linear-gradient(90deg, #ef4444, #ef4444 5px, transparent 5px, transparent 9px);
+            height: 3px;
+            border-radius: 0;
+            border: none;
+        }
+
+        &.back {
+            background: repeating-linear-gradient(90deg, #ef4444, #ef4444 5px, transparent 5px, transparent 9px);
+            height: 3px;
+            border-radius: 0;
+        }
+
+        &.forward {
+            background: repeating-linear-gradient(90deg, #3b82f6, #3b82f6 5px, transparent 5px, transparent 9px);
+            height: 3px;
+            border-radius: 0;
+        }
+
+        &.cross {
+            background: repeating-linear-gradient(90deg, #10b981, #10b981 5px, transparent 5px, transparent 9px);
+            height: 3px;
+            border-radius: 0;
+        }
+
+        &.min-cut {
+            background: repeating-linear-gradient(90deg, #ef4444, #ef4444 5px, transparent 5px, transparent 9px);
+            height: 3px;
+            border-radius: 0;
+        }
+    }
+
+
+    .legend-divider {
+        border-top: 1px solid #e2e8f0;
+        margin: 4px 0;
+    }
+
+    .legend-chip-sample {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 600;
+        color: #0284c7;
+        background: #e0f2fe;
+        border: 1px solid #bae6fd;
+        border-radius: 6px;
+        padding: 1px 5px;
+    }
+
+    .legend-badge-sample {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 700;
+        color: #38bdf8;
+        background: #1e293b;
+        border-radius: 4px;
+        padding: 1px 4px;
+    }
+
+    .legend-role-sample {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        font-size: 9.5px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'JetBrains Mono', monospace;
+        color: #ffffff;
+        flex-shrink: 0;
+
+        &.source {
+            background: #10b981;
+        }
+
+        &.sink {
+            background: #ef4444;
+        }
+
+        &.root {
+            background: #8b5cf6;
+        }
+    }
+}
+
+.edge-matrix-card {
+    margin-top: 6px;
+    padding: 6px 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .edge-matrix-title {
+        font-weight: 700;
+        color: #334155;
+        font-size: 9.5px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+    }
+
+    .edge-matrix-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10px;
+
+        th {
+            padding: 2px 4px;
+            font-size: 9px;
+            font-weight: 700;
+            color: #64748b;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+
+            &:first-child {
+                text-align: left;
+            }
+
+            &:nth-child(2) {
+                text-align: left;
+            }
+
+            &.th-tree {
+                color: #1e293b;
+            }
+
+            &.th-back {
+                color: #ef4444;
+            }
+
+            &.th-forward {
+                color: #3b82f6;
+            }
+
+            &.th-cross {
+                color: #10b981;
+            }
+        }
+
+        td {
+            padding: 2px 4px;
+            text-align: center;
+            font-size: 9.5px;
+            color: #475569;
+
+            &.cell-graf {
+                text-align: left;
+                font-weight: 600;
+                color: #334155;
+            }
+
+            &.cell-alg {
+                text-align: left;
+                font-family: 'JetBrains Mono', monospace;
+                font-weight: 700;
+                color: #0f172a;
+            }
+
+            &.cell-val {
+                font-family: 'JetBrains Mono', monospace;
+                font-weight: 700;
+                font-size: 9px;
+
+                &.yes {
+                    color: #15803d;
+                    background: #dcfce7;
+                    border-radius: 3px;
+                }
+
+                &.no {
+                    color: #94a3b8;
+                }
+            }
+        }
+
+        tr {
+            transition: background 0.15s ease;
+
+            &.active-row {
+                background: #e0f2fe;
+                box-shadow: inset 2px 0 0 #0284c7;
+
+                td.cell-graf,
+                td.cell-alg {
+                    color: #0369a1;
+                }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════

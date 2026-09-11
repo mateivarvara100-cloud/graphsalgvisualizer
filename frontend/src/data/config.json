@@ -1,0 +1,283 @@
+{
+    "algorithms": {
+        "BFS": {
+            "title": "Breadth-First Search",
+            "tagline": "Level-order traversal & unweighted shortest paths",
+            "description": "Breadth-First Search explores the graph level by level, starting from a source node and visiting all immediate neighbors before moving deeper. Using a FIFO queue, it radiates outward like a wave, ensuring that the first time any vertex is discovered, the shortest path (in terms of edge count) from the start node has been found.",
+            "complexity": "O(V + E)",
+            "category": "Graph Traversal",
+            "requiresStart": true,
+            "requiresWeighted": false,
+            "requiresDirected": null,
+            "dataStructure": "queue",
+            "courseInsights": [
+                {
+                    "label": "Queue & Colors",
+                    "val": "Vertices start WHITE (u.d = ∞, u.π = NIL). Discovered vertices turn GRAY with v.d = u.d + 1 and v.π = u when Enqueue(Q, v) is called, turning BLACK with timestamp u.f after Dequeue(Q)."
+                },
+                {
+                    "label": "Edge Classification",
+                    "val": "Edges are classified as Tree edges (v.color == WHITE), Back edges (v on ancestor path in directed graphs), or Cross edges (same or adjacent level; no Forward edges exist in BFS)."
+                },
+                {
+                    "label": "Shortest Path",
+                    "val": "Because vertices are dequeued in order of increasing distance, when v is first enqueued, v.d gives the exact minimum number of edges from source s to v."
+                }
+            ]
+        },
+        "DFS": {
+            "title": "Depth-First Search",
+            "tagline": "Recursive backtracking & topological structure",
+            "description": "Depth-First Search traverses a graph by moving as deeply as possible along each branch before backtracking when hitting a dead end. Using recursion (or a stack), it tracks when nodes are discovered and finished, making it a foundational tool for detecting cycles, topological sorting, and mapping graph connectivity.",
+            "complexity": "O(V + E)",
+            "category": "Graph Traversal",
+            "requiresStart": true,
+            "requiresWeighted": false,
+            "requiresDirected": null,
+            "dataStructure": "stack",
+            "courseInsights": [
+                {
+                    "label": "Timestamps & State",
+                    "val": "When DFS-Visit(G, u) begins, u turns GRAY with discovery time u.d = time. When all neighbors of u are finished, u turns BLACK with finish time u.f = time."
+                },
+                {
+                    "label": "Edge Classification",
+                    "val": "Classifies edges into Tree edges (v.color == WHITE), Back edges (v.color == GRAY), Forward edges (u.d < v.d), and Cross edges (v.d < u.d)."
+                },
+                {
+                    "label": "Cycle Detection",
+                    "val": "Back edges (v.color == GRAY) identify cycles. A directed graph is a DAG if and only if DFS yields no Back edges, and ordering by decreasing u.f yields a Topological Sort."
+                }
+            ]
+        },
+        "Dijkstra": {
+            "title": "Dijkstra's Algorithm",
+            "tagline": "Single-source shortest paths via greedy relaxation",
+            "description": "Dijkstra's algorithm finds the shortest path from a starting node to every other node in a graph with non-negative edge weights. It greedily selects the unvisited node with the smallest tentative distance, marks it as finalized, and relaxes all its outgoing edges to check if routing through that node offers a faster route to neighboring vertices.",
+            "complexity": "O(E + V · log V)",
+            "category": "Shortest Path",
+            "requiresStart": true,
+            "requiresWeighted": true,
+            "requiresDirected": null,
+            "dataStructure": "priority_queue",
+            "courseInsights": [
+                {
+                    "label": "RELAX Procedure",
+                    "val": "RELAX(u, v, w) checks if v.d > u.d + w(u, v). If true, it updates v.d = u.d + w(u, v) and assigns predecessor v.π = u, tightening the shortest path estimate."
+                },
+                {
+                    "label": "Extract-Min & Set S",
+                    "val": "u = EXTRACT-MIN(Q) pulls the vertex with lowest distance from Q, adding it to S = S ∪ {u} (marked Black) where its distance is finalized."
+                },
+                {
+                    "label": "Non-Negative Weights",
+                    "val": "Edge weights w(u, v) ≥ 0 ensure that when u is extracted from Q, distance u.d is optimal and will never be decreased by future relaxations."
+                }
+            ]
+        },
+        "FloydWarshall": {
+            "title": "Floyd-Warshall Algorithm",
+            "tagline": "All-pairs shortest paths via dynamic programming",
+            "description": "Floyd-Warshall computes the shortest paths between all pairs of nodes in a graph using dynamic programming. It systematically considers every node as a potential intermediate waypoint: if traveling between two nodes through that waypoint is shorter than the known direct route, the shortest distance is updated.",
+            "complexity": "O(V³)",
+            "category": "Shortest Path",
+            "requiresStart": false,
+            "requiresWeighted": true,
+            "requiresDirected": null,
+            "dataStructure": "matrix",
+            "courseInsights": [
+                {
+                    "label": "Distance Update",
+                    "val": "If D[i][k] + D[k][j] < D[i][j], routing from i to j through intermediate pivot k improves the distance, updating D[i][j] = D[i][k] + D[k][j]."
+                },
+                {
+                    "label": "Triply-Nested Loops",
+                    "val": "Outer loop k from 1 to n tests each vertex as an intermediate step, while inner loops i and j evaluate all pairs, running in exactly Θ(V³) time."
+                },
+                {
+                    "label": "Negative Cycle Check",
+                    "val": "If any diagonal entry D[i][i] becomes negative (D[i][i] < 0) after the loops finish, the graph contains a negative-weight cycle."
+                }
+            ]
+        },
+        "Kruskal": {
+            "title": "Kruskal's Algorithm",
+            "tagline": "Minimum spanning tree via safe edge greedy union",
+            "description": "Kruskal's algorithm finds a Minimum Spanning Tree by connecting all vertices with the smallest total edge weight without forming cycles. It sorts all edges from lightest to heaviest and greedily adds each edge one by one, using a disjoint-set (union-find) structure to skip any edge whose endpoints are already connected.",
+            "complexity": "O(E · log E)",
+            "category": "Minimum Spanning Tree",
+            "requiresStart": false,
+            "requiresWeighted": true,
+            "requiresDirected": false,
+            "dataStructure": "disjoint_sets",
+            "courseInsights": [
+                {
+                    "label": "Disjoint-Set Operations",
+                    "val": "Make-Set(v) creates a set for each vertex. For each edge (u, v), Find-Set checks component roots; if Find-Set(u) ≠ Find-Set(v), Union(u, v) merges them."
+                },
+                {
+                    "label": "Cycle Prevention",
+                    "val": "If Find-Set(u) == Find-Set(v), vertices u and v are already connected in the forest, so edge (u, v) is skipped to avoid creating a cycle."
+                },
+                {
+                    "label": "Edge Sorting",
+                    "val": "Edges in G.E are sorted by nondecreasing weight w, ensuring the globally lightest safe edge is always added first until |V| − 1 edges form tree A."
+                }
+            ]
+        },
+        "Prim": {
+            "title": "Prim's Algorithm",
+            "tagline": "Minimum spanning tree via cut expansion from root",
+            "description": "Prim's algorithm builds a Minimum Spanning Tree by growing a single connected tree outward from a chosen starting node. At every step, it uses a priority queue to find the cheapest edge that connects any node inside the tree to a node outside it, continually expanding the tree until all vertices are included.",
+            "complexity": "O(E + V · log V)",
+            "category": "Minimum Spanning Tree",
+            "requiresStart": true,
+            "requiresWeighted": true,
+            "requiresDirected": false,
+            "dataStructure": "priority_queue",
+            "courseInsights": [
+                {
+                    "label": "Key & Parent Updates",
+                    "val": "For each neighbor v ∈ G.Adj[u], if v ∈ Q and w(u, v) < v.key, it sets v.π = u and decreases v.key = w(u, v) to reflect the lighter cut connection."
+                },
+                {
+                    "label": "Extract-Min Selection",
+                    "val": "u = Extract-Min(Q) greedily picks the vertex with minimum key, ensuring the cheapest edge connecting the growing tree to remaining vertices is chosen."
+                },
+                {
+                    "label": "Tree Expansion",
+                    "val": "Unlike Kruskal which maintains multiple disjoint components, Prim continuously expands a single tree outward from root r until Q becomes empty."
+                }
+            ]
+        },
+        "FordFulkerson": {
+            "title": "Ford-Fulkerson Method",
+            "tagline": "Maximum flow via residual networks & augmenting paths",
+            "description": "The Ford-Fulkerson method computes the maximum possible flow through a network from a source to a sink. It repeatedly finds an augmenting path with available residual capacity (typically using DFS), pushes the maximum possible bottleneck flow along that path, and updates residual edges until no route from source to sink remains.",
+            "complexity": "O(E · |f*|)",
+            "category": "Network Flow",
+            "requiresStart": false,
+            "requiresSource": true,
+            "requiresSink": true,
+            "requiresWeighted": true,
+            "requiresDirected": true,
+            "dataStructure": "stack",
+            "courseInsights": [
+                {
+                    "label": "Residual Network G_f",
+                    "val": "Forward edges have residual capacity c_f(u, v) = c(u, v) − f(u, v) to admit more flow. Reverse edges have c_f(v, u) = f(u, v) to cancel/reroute flow."
+                },
+                {
+                    "label": "Bottleneck Augmentation",
+                    "val": "DFS finds augmenting path p, sets bottleneck = c_f(p) = min c_f(u, v) along p, and updates f(u, v) = f(u, v) + c_f(p) and f(v, u) = f(v, u) − c_f(p)."
+                },
+                {
+                    "label": "Max-Flow Termination",
+                    "val": "The method terminates when no augmenting path s ⇝ t exists in G_f. At this point, total flow Σ f(s, v) equals the capacity of the minimum cut."
+                }
+            ]
+        },
+        "EdmondsKarp": {
+            "title": "Edmonds-Karp Algorithm",
+            "tagline": "Polynomial maximum flow via BFS shortest augmenting paths",
+            "description": "Edmonds-Karp is an efficient implementation of the Ford-Fulkerson method that uses Breadth-First Search (BFS) to always choose the shortest augmenting path (fewest edges). Choosing shortest paths guarantees that the algorithm terminates in polynomial time, avoiding worst-case exponential runtime on fractional or large capacities.",
+            "complexity": "O(V · E²)",
+            "category": "Network Flow",
+            "requiresStart": false,
+            "requiresSource": true,
+            "requiresSink": true,
+            "requiresWeighted": true,
+            "requiresDirected": true,
+            "dataStructure": "queue",
+            "courseInsights": [
+                {
+                    "label": "BFS Shortest Path",
+                    "val": "Using BFS to find augmenting path p selects the path with the fewest edges in G_f, ensuring monotonic shortest-path distance growth and avoiding cycles."
+                },
+                {
+                    "label": "Bottleneck Updates",
+                    "val": "Computes bottleneck = min{ c_f(u, v) | (u, v) ∈ p } and updates each edge (u, v) ∈ p with f(u, v) += bottleneck and reverse edge f(v, u) -= bottleneck."
+                },
+                {
+                    "label": "Polynomial Bound",
+                    "val": "Selecting shortest augmenting paths with BFS guarantees at most O(V · E) total augmentations and a polynomial runtime of O(V · E²), independent of flow values."
+                }
+            ]
+        },
+        "Kosaraju": {
+            "title": "Kosaraju's Algorithm",
+            "tagline": "Strongly connected components via two-pass DFS",
+            "description": "Kosaraju's algorithm decomposes a directed graph into its strongly connected components, where every vertex in a group can reach every other. It works in two elegant DFS passes: the first pass records the finishing order of nodes, and the second pass traverses the reversed graph in that order to peel off one isolated component at a time.",
+            "complexity": "O(V + E)",
+            "category": "Connectivity",
+            "requiresStart": false,
+            "requiresWeighted": false,
+            "requiresDirected": true,
+            "dataStructure": "stack",
+            "courseInsights": [
+                {
+                    "label": "Pass 1 & Finish Stack",
+                    "val": "Runs DFS(G) and pushes each finished vertex onto a stack in order of finish times u.f, ensuring vertices from source components sit near the stack top."
+                },
+                {
+                    "label": "Transpose Graph G^T",
+                    "val": "Reversing all directed edges inverts component connections in G^T, so source components of G become sink components with no edges leading out."
+                },
+                {
+                    "label": "Pass 2 DFS Isolation",
+                    "val": "Pops vertices from the finish stack to run DFS-Visit on G^T. Because the visited component is a sink in G^T, the search cannot escape, isolating exactly 1 SCC."
+                }
+            ]
+        },
+        "Tarjan": {
+            "title": "Tarjan's Algorithm",
+            "tagline": "Strongly connected components in a single DFS pass",
+            "description": "Tarjan's algorithm discovers all strongly connected components in a single, efficient DFS traversal. By tracking discovery times and the lowest reachable ancestor (low-link value) on an active stack, it detects the root of each component as DFS backtracks, popping the entire connected cluster together.",
+            "complexity": "O(V + E)",
+            "category": "Connectivity",
+            "requiresStart": false,
+            "requiresWeighted": false,
+            "requiresDirected": true,
+            "dataStructure": "stack",
+            "courseInsights": [
+                {
+                    "label": "u.index & u.lowLink",
+                    "val": "u.index is the discovery counter. u.lowLink tracks the lowest index reachable: updated by min(u.lowLink, v.lowLink) for tree edges or min(u.lowLink, v.index) if v.onStack."
+                },
+                {
+                    "label": "Stack S & u.onStack",
+                    "val": "Push(S, u) sets u.onStack = TRUE, keeping candidates on stack S until their SCC is resolved. When popped, v.onStack = FALSE and v.comp = nrComponents."
+                },
+                {
+                    "label": "SCC Root Condition",
+                    "val": "When u.lowLink == u.index, vertex u is the root of an SCC. Vertices are popped from S in repeat v = POP(S) until v == u, grouping them into component nrComponents."
+                }
+            ]
+        }
+    },
+    "algorithmCategories": ["Graph Traversal", "Shortest Path", "Minimum Spanning Tree", "Network Flow", "Connectivity"],
+    "graphDataForPython": {
+        "A": ["B", "C"],
+        "B": ["A", "D", "E"],
+        "C": ["A", "F"],
+        "D": ["B"],
+        "E": ["B", "F"],
+        "F": ["C", "E"]
+    },
+    "initialNodes": [
+        {"id": "A", "type": "academic", "position": {"x": 300, "y": 40},  "data": {"label": "A", "status": "white", "isActive": false}},
+        {"id": "B", "type": "academic", "position": {"x": 130, "y": 160}, "data": {"label": "B", "status": "white", "isActive": false}},
+        {"id": "C", "type": "academic", "position": {"x": 470, "y": 160}, "data": {"label": "C", "status": "white", "isActive": false}},
+        {"id": "D", "type": "academic", "position": {"x": 50,  "y": 300}, "data": {"label": "D", "status": "white", "isActive": false}},
+        {"id": "E", "type": "academic", "position": {"x": 220, "y": 300}, "data": {"label": "E", "status": "white", "isActive": false}},
+        {"id": "F", "type": "academic", "position": {"x": 470, "y": 300}, "data": {"label": "F", "status": "white", "isActive": false}}
+    ],
+    "initialEdges": [
+        {"id": "eA-B", "source": "A", "target": "B", "weight": 4, "label": "4"},
+        {"id": "eA-C", "source": "A", "target": "C", "weight": 2, "label": "2"},
+        {"id": "eB-D", "source": "B", "target": "D", "weight": 5, "label": "5"},
+        {"id": "eB-E", "source": "B", "target": "E", "weight": 3, "label": "3"},
+        {"id": "eC-F", "source": "C", "target": "F", "weight": 1, "label": "1"},
+        {"id": "eE-F", "source": "E", "target": "F", "weight": 6, "label": "6"}
+    ]
+}
