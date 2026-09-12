@@ -1,0 +1,734 @@
+// Data Structure Panel
+// ═══════════════════════════════════════════════════════════════
+.ds-panel {
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    padding: 12px 20px;
+
+    .ds-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+
+        .ds-label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: $text-dark;
+        }
+
+        .ds-size {
+            font-size: 11px;
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+        }
+    }
+
+    .ds-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: $bg-panel;
+        color: white;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: 'JetBrains Mono', monospace;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+
+        &.front {
+            background: $accent-blue;
+            box-shadow: 0 2px 8px rgba($accent-blue, 0.3);
+        }
+    }
+
+    .ds-body {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .ds-arrow-label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .ds-items-container {
+            display: flex;
+            gap: 6px;
+            flex: 1;
+            min-height: 36px;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 5px 10px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .ds-empty {
+            color: #94a3b8;
+            font-size: 12px;
+            font-style: italic;
+        }
+    }
+
+    // ── Disjoint Sets ──
+    &.ds-panel-disjoint {
+        .ds-body-sets {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            min-height: 42px;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .ds-set-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #fff;
+            border: 1.5px solid #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: $text-dark;
+
+            .ds-set-brace {
+                color: $accent-blue;
+                font-weight: 800;
+            }
+        }
+    }
+
+    // ── Priority Queue ──
+    &.ds-panel-pq {
+        .ds-body-pq {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ds-pq-container {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            min-height: 46px;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .ds-pq-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+            border: 1px solid #334155;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            &.front {
+                background: #0f766e;
+                border-color: #14b8a6;
+                box-shadow: 0 2px 8px rgba(20, 184, 166, 0.35);
+
+                .pq-key {
+                    color: #99f6e4;
+                }
+            }
+
+            .pq-node-id {
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            .pq-node-meta {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1px;
+            }
+
+            .pq-key {
+                font-size: 11px;
+                font-weight: 600;
+                color: #38bdf8;
+            }
+
+            .pq-pi {
+                font-size: 10px;
+                color: #cbd5e1;
+            }
+        }
+    }
+
+    // ── Distance Matrix (Floyd-Warshall) ──
+    &.ds-panel-matrix {
+        padding: 12px 16px;
+
+        .ds-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ds-intermediate-badge {
+            font-size: 11px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+            border-radius: 4px;
+            padding: 1px 6px;
+
+            strong {
+                font-weight: 700;
+            }
+        }
+
+        .ds-neg-cycle-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            font-size: 11.5px;
+            line-height: 1.4;
+
+            .ds-neg-cycle-icon {
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .ds-neg-cycle-content {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .ds-neg-cycle-title {
+                    font-weight: 700;
+                    color: #991b1b;
+                    font-size: 12px;
+                }
+
+                .ds-neg-cycle-msg {
+                    color: #7f1d1d;
+                }
+            }
+        }
+
+        .ds-matrix-scroll {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 140px;
+        }
+
+        .ds-matrix-table {
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            white-space: nowrap;
+
+            .ds-matrix-corner,
+            .ds-matrix-head {
+                padding: 3px 8px;
+                text-align: center;
+                font-weight: 700;
+                color: $text-dark;
+                background: #f1f5f9;
+                border: 1px solid #e2e8f0;
+
+                &.col-active,
+                &.row-active {
+                    background: #fef3c7 !important;
+                    color: #92400e !important;
+                }
+
+                &.k-active {
+                    background: #e0e7ff !important;
+                    color: #3730a3 !important;
+                }
+            }
+
+            .ds-matrix-cell {
+                padding: 3px 8px;
+                text-align: center;
+                border: 1px solid #e2e8f0;
+                color: $text-dark;
+                font-weight: 500;
+                min-width: 32px;
+                transition: background-color 0.3s ease;
+
+                &.diag {
+                    background: #f8fafc;
+                    color: #94a3b8;
+                }
+
+                &.cell-neg-cycle {
+                    background: #fee2e2 !important;
+                    color: #b91c1c !important;
+                    font-weight: 800 !important;
+                    box-shadow: inset 0 0 0 2px #ef4444;
+                    animation: pulse-neg-diag 1.8s infinite alternate ease-in-out;
+                }
+
+                &.inf {
+                    color: #cbd5e1;
+                }
+
+                &.zero:not(.diag) {
+                    color: $accent-green;
+                    font-weight: 700;
+                }
+
+                &.cell-target {
+                    background: #fef08a !important;
+                    color: #713f12 !important;
+                    font-weight: 800;
+                    box-shadow: inset 0 0 0 1.5px #eab308;
+                }
+
+                &.cell-k-sum {
+                    background: #ddd6fe !important;
+                    color: #4c1d95 !important;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    // ── Flow Network Panel (Ford-Fulkerson) ──
+    &.ds-panel-flow {
+        .ds-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ds-iteration-badge {
+            font-size: 11px;
+            font-weight: 600;
+            background: #f3e8ff;
+            color: #7e22ce;
+            border: 1px solid #d8b4fe;
+            border-radius: 4px;
+            padding: 1px 7px;
+        }
+
+        .ds-flow-total {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            font-family: 'JetBrains Mono', monospace;
+
+            .flow-total-label {
+                font-size: 11px;
+                color: #64748b;
+                font-weight: 500;
+            }
+
+            .flow-total-val {
+                font-size: 15px;
+                font-weight: 800;
+                color: #059669;
+            }
+        }
+
+        .ds-flow-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .flow-path-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .flow-card-label {
+                font-size: 11px;
+                font-weight: 600;
+                color: #475569;
+            }
+
+            .flow-path-display {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .flow-path-str {
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #0f172a;
+                }
+
+                .flow-bottleneck-badge {
+                    background: #ecfdf5;
+                    border: 1px solid #a7f3d0;
+                    color: #065f46;
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 1px 7px;
+                    border-radius: 4px;
+                }
+            }
+
+            .flow-path-idle {
+                font-size: 11px;
+                color: #94a3b8;
+                font-style: italic;
+            }
+        }
+
+        .flow-ds-tracker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 5px 12px;
+
+            .flow-ds-tracker-label {
+                font-weight: 600;
+                color: #475569;
+                font-size: 11px;
+            }
+
+            .flow-ds-tracker-chips {
+                display: flex;
+                gap: 5px;
+                align-items: center;
+                flex-wrap: wrap;
+
+                .flow-ds-chip {
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 1px 7px;
+                    border-radius: 4px;
+                    background: #ffffff;
+                    border: 1.5px solid #cbd5e1;
+                    color: #334155;
+                    transition: all 0.2s ease;
+
+                    &.active-tip {
+                        background: #8b5cf6;
+                        border-color: #7c3aed;
+                        color: #ffffff;
+                        box-shadow: 0 1px 4px rgba(139, 92, 246, 0.35);
+                    }
+                }
+            }
+        }
+
+        .flow-mincut-card {
+            background: #faf5ff;
+            border: 1.5px solid #d8b4fe;
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+
+            .mincut-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .mincut-title {
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #581c87;
+                }
+
+                .mincut-capacity {
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    color: #dc2626;
+                    background: #fee2e2;
+                    border: 1px solid #fca5a5;
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                }
+            }
+
+            .mincut-partitions {
+                display: flex;
+                gap: 14px;
+
+                .cut-set {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 11.5px;
+
+                    .cut-set-name {
+                        font-weight: 600;
+                        color: #64748b;
+                    }
+
+                    .cut-set-members {
+                        font-family: 'JetBrains Mono', monospace;
+                        font-weight: 700;
+                        color: #1e293b;
+                    }
+
+                    &.s-set .cut-set-members {
+                        color: #047857;
+                    }
+
+                    &.t-set .cut-set-members {
+                        color: #b91c1c;
+                    }
+                }
+            }
+
+            .saturated-edges-list {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+
+                .cut-set-name {
+                    font-weight: 600;
+                    color: #64748b;
+                }
+
+                .saturated-chips {
+                    display: flex;
+                    gap: 5px;
+                    flex-wrap: wrap;
+
+                    .saturated-chip {
+                        background: #dcfce7;
+                        border: 1px solid #86efac;
+                        color: #166534;
+                        font-family: 'JetBrains Mono', monospace;
+                        font-size: 10.5px;
+                        font-weight: 700;
+                        padding: 1px 6px;
+                        border-radius: 4px;
+                    }
+                }
+            }
+        }
+    }
+
+    // ── SCC Panel (Kosaraju & Tarjan) ──
+    &.ds-panel-scc {
+        .ds-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ds-phase-badge {
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 1px 7px;
+            border-radius: 4px;
+
+            &.phase-1 {
+                background: #e0e7ff;
+                color: #3730a3;
+                border: 1px solid #c7d2fe;
+            }
+
+            &.phase-2 {
+                background: #fef3c7;
+                color: #92400e;
+                border: 1px solid #fde68a;
+            }
+        }
+
+        .ds-scc-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .scc-stack-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .scc-section-title {
+                display: flex;
+                flex-direction: column;
+                font-size: 11px;
+                font-weight: 600;
+                color: #475569;
+                white-space: nowrap;
+
+                .stack-count {
+                    font-size: 10px;
+                    color: #94a3b8;
+                    font-weight: normal;
+                }
+            }
+
+            .ds-arrow-label {
+                font-size: 11px;
+                color: #94a3b8;
+                font-family: 'JetBrains Mono', monospace;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .scc-stack-container {
+                display: flex;
+                gap: 6px;
+                flex: 1;
+                min-height: 38px;
+                align-items: center;
+                background: #f8fafc;
+                border-radius: 8px;
+                padding: 5px 10px;
+                border: 1px solid #e2e8f0;
+                overflow-x: auto;
+            }
+
+            .scc-stack-item {
+                position: relative;
+                width: 34px;
+                height: 34px;
+                background: #1e293b;
+                color: #ffffff;
+                border: 1.5px solid #334155;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 13.5px;
+                font-weight: 700;
+                flex-shrink: 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                }
+
+                &.top {
+                    background: #0284c7;
+                    border-color: #38bdf8;
+                    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.45);
+                }
+
+                .stack-top-indicator {
+                    position: absolute;
+                    top: -7px;
+                    right: -4px;
+                    background: #f59e0b;
+                    color: #0f172a;
+                    font-size: 8px;
+                    font-weight: 800;
+                    padding: 0 3px;
+                    border-radius: 3px;
+                    text-transform: uppercase;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+                    letter-spacing: 0.5px;
+                }
+
+                .stack-bot-indicator {
+                    position: absolute;
+                    bottom: -6px;
+                    left: -4px;
+                    background: #475569;
+                    color: #f8fafc;
+                    font-size: 7.5px;
+                    font-weight: 700;
+                    padding: 0 3px;
+                    border-radius: 3px;
+                    text-transform: uppercase;
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        .scc-components-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .scc-section-title {
+                font-size: 11px;
+                font-weight: 600;
+                color: #475569;
+                white-space: nowrap;
+            }
+
+            .scc-list-container {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+
+            .scc-component-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 2px 8px;
+                border-radius: 12px;
+                border: 1.5px solid;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11.5px;
+
+                .scc-dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                }
+
+                .scc-id {
+                    font-weight: 700;
+                }
+
+                .scc-members {
+                    color: #1e293b;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════

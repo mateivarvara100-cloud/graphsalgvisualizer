@@ -1,0 +1,96 @@
+// Pseudocode Panel
+// ═══════════════════════════════════════════════════════════════
+.pseudocode-panel {
+    width: 400px;
+    min-width: 340px;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    .pseudocode-header {
+        padding: 12px 18px;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 13px;
+        font-weight: 600;
+        color: $text-dark;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+
+        .pseudocode-icon {
+            font-family: 'JetBrains Mono', monospace;
+            color: $accent-blue;
+            font-size: 14px;
+            font-weight: 700;
+        }
+    }
+
+    .pseudocode-body {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 10px 0;
+        scroll-behavior: smooth;
+    }
+
+    .pseudocode-spacer {
+        height: 14px;
+    }
+
+    .pseudocode-line {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 3px 18px 3px 10px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        line-height: 1.65;
+        color: #64748b;
+        transition: color 0.2s ease;
+
+        &.header {
+            font-weight: 700;
+            color: $text-dark;
+            padding-top: 6px;
+            padding-bottom: 4px;
+            font-size: 12.5px;
+        }
+
+        .line-number {
+            width: 22px;
+            text-align: right;
+            color: #cbd5e1;
+            margin-right: 12px;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .line-text {
+            white-space: pre;
+            z-index: 1;
+        }
+
+        .line-highlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba($accent-amber, 0.12);
+            border-left: 3px solid $accent-amber;
+            border-radius: 0 4px 4px 0;
+            z-index: 0;
+        }
+
+        &.active {
+            color: $text-dark;
+            font-weight: 600;
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
