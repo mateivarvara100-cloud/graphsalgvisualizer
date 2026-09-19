@@ -34,7 +34,7 @@ function getSinkId(nds, sourceId) {
     }, null)?.id || remaining[remaining.length - 1]?.id;
 }
 
-// ── Flow Network Formatter ───────────────────────────────────────────────────
+// Flow Network Formatter
 function formatFlowEdges(edgeDefs) {
     return edgeDefs.map(e => ({
         id: `e${e.source}-${e.target}`,
@@ -233,7 +233,7 @@ export function useGraphEditor(initialDirected = false, isWeighted = false, hasS
         }
     }, [isWeighted, isFlow]);
 
-    // ── Undo / Redo history ──────────────────────────────────────────────
+    //Undo / Redo history 
     const historyRef = useRef([]);       // past snapshots
     const futureRef  = useRef([]);       // redo snapshots
 
@@ -296,7 +296,7 @@ export function useGraphEditor(initialDirected = false, isWeighted = false, hasS
         });
     }, [snapshot, refreshUndoRedo]);
 
-    // ── Change handlers ──────────────────────────────────────────────────
+    // Change handlers
     const onNodesChange = useCallback((changes) => {
         setNodes(nds => applyNodeChanges(changes, nds));
     }, []);

@@ -1,14 +1,37 @@
 import os
+import time
 import uuid
+from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Optional, List
-from fastapi import APIRouter, Request, Response, HTTPException
+from fastapi import APIRouter, Request, Response, HTTPException, status
 from pydantic import BaseModel, Field
 
 from database import get_quiz_results_collection, is_db_connected
 from auth_routes import get_current_user_from_request
 
 router = APIRouter()
+
+class SlidingWindowLimiter:
+    def __init__(self):
+        self._history = defaultdict(list)
+
+    def is_allowed(self, key: str, max_requests: int, window_seconds: int) -> bool:
+        now = time.time()
+        cutoff = now - window_seconds
+        self._history[key] = [t for t in self._history[key] if t > cutoff]
+        if len(self._history[key]) >= max_requests:
+            return False
+        self._history[key].append(now)
+        return True
+
+quiz_limiter = SlidingWindowLimiter()
+
+def get_client_ip(request: Request) -> str:
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "127.0.0.1"
 
 class QuizResultItem(BaseModel):
     algorithm: str = Field(..., min_length=1, max_length=100)
@@ -33,6 +56,13 @@ def clear_guest_cookie(response: Response):
 
 @router.post("/results")
 def save_quiz_result(body: QuizResultItem, request: Request, response: Response):
+    client_ip = get_client_ip(request)
+    if not quiz_limiter.is_allowed(f"quiz_ip:{client_ip}", max_requests=30, window_seconds=60):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Rate limit exceeded for quiz submissions. Please wait a moment before submitting more results."
+        )
+
     user_payload = get_current_user_from_request(request)
     user_id = user_payload.get("sub") if user_payload else None
 
@@ -152,6 +182,13 @@ def get_quiz_results(request: Request, response: Response):
 
 @router.post("/sync")
 def sync_local_results(body: SyncResultsRequest, request: Request):
+    client_ip = get_client_ip(request)
+    if not quiz_limiter.is_allowed(f"sync_ip:{client_ip}", max_requests=10, window_seconds=60):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Rate limit exceeded for quiz sync. Please wait a moment before trying again."
+        )
+
     user_payload = get_current_user_from_request(request)
     if not user_payload or not user_payload.get("sub"):
         return {"status": "skipped", "message": "User not authenticated."}

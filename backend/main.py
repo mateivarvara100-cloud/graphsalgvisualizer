@@ -82,6 +82,20 @@ def validate_floyd_warshall_node_count(count: int):
             detail=f"Floyd-Warshall node count ({count}) exceeds maximum allowed limit of {MAX_FLOYD_WARSHALL_NODES} nodes due to O(V^3) computational limits."
         )
 
+def validate_adjacency_edges(graph: Dict[str, Any]):
+    if not graph:
+        return
+    total_edges = sum(
+        len(neighbors) 
+        for neighbors in graph.values() 
+        if isinstance(neighbors, (list, dict, set, tuple))
+    )
+    if total_edges > MAX_GRAPH_EDGES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Total graph edge count ({total_edges}) exceeds maximum allowed limit of {MAX_GRAPH_EDGES} edges."
+        )
+
 def validate_start_node(graph: Dict[str, Any], start_node: str):
     if not graph:
         raise HTTPException(status_code=400, detail="Graph cannot be empty.")
@@ -131,7 +145,8 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Content-Security-Policy"] = "default-src 'self'; frame-ancestors 'none'; object-src 'none';"
     
     is_prod = os.getenv("ENVIRONMENT", "development").lower() == "production"
-    if is_prod or request.url.scheme == "https":
+    forwarded_proto = request.headers.get("x-forwarded-proto", "").lower()
+    if is_prod or request.url.scheme == "https" or forwarded_proto == "https":
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
 
@@ -195,6 +210,7 @@ def api_health():
 def api_bfs(request: Request, data: GraphData):
     check_algo_rate_limit(request)
     validate_node_count(len(data.graph))
+    validate_adjacency_edges(data.graph)
     validate_start_node(data.graph, data.start_node)
     steps = run_bfs(data.graph, data.start_node, is_directed=bool(data.is_directed))
     return {"algorithm": "BFS", "steps": steps}
@@ -203,6 +219,7 @@ def api_bfs(request: Request, data: GraphData):
 def api_dfs(request: Request, data: GraphData):
     check_algo_rate_limit(request)
     validate_node_count(len(data.graph))
+    validate_adjacency_edges(data.graph)
     validate_start_node(data.graph, data.start_node)
     steps = run_dfs(data.graph, data.start_node, is_directed=bool(data.is_directed))
     return {"algorithm": "DFS", "steps": steps}
@@ -212,6 +229,7 @@ def api_kruskal(request: Request, data: WeightedGraphData):
     check_algo_rate_limit(request)
     if data.graph:
         validate_node_count(len(data.graph))
+        validate_adjacency_edges(data.graph)
     if data.edges:
         validate_edge_count(len(data.edges))
     steps = run_kruskal(data.graph, data.edges)
@@ -222,6 +240,7 @@ def api_prim(request: Request, data: WeightedGraphData):
     check_algo_rate_limit(request)
     if data.graph:
         validate_node_count(len(data.graph))
+        validate_adjacency_edges(data.graph)
         if data.start_node and data.start_node not in data.graph:
             data.start_node = next(iter(data.graph))
     if data.edges:
@@ -233,6 +252,7 @@ def api_prim(request: Request, data: WeightedGraphData):
 def api_dijkstra(request: Request, data: DijkstraData):
     check_algo_rate_limit(request)
     validate_node_count(len(data.graph))
+    validate_adjacency_edges(data.graph)
     validate_start_node(data.graph, data.start_node)
     steps = run_dijkstra(data.graph, data.start_node)
     return {"algorithm": "Dijkstra", "steps": steps}
@@ -243,6 +263,7 @@ def api_floyd_warshall(request: Request, data: FloydData):
     if not data.graph:
         raise HTTPException(status_code=400, detail="Graph cannot be empty.")
     validate_floyd_warshall_node_count(len(data.graph))
+    validate_adjacency_edges(data.graph)
     steps = run_floyd_warshall(data.graph)
     return {"algorithm": "FloydWarshall", "steps": steps}
 
@@ -280,6 +301,7 @@ def api_kosaraju(request: Request, data: SCCData):
     if not data.graph:
         raise HTTPException(status_code=400, detail="Graph cannot be empty.")
     validate_node_count(len(data.graph))
+    validate_adjacency_edges(data.graph)
     steps = run_kosaraju(data.graph)
     return {"algorithm": "Kosaraju", "steps": steps}
 
@@ -289,6 +311,7 @@ def api_tarjan(request: Request, data: SCCData):
     if not data.graph:
         raise HTTPException(status_code=400, detail="Graph cannot be empty.")
     validate_node_count(len(data.graph))
+    validate_adjacency_edges(data.graph)
     steps = run_tarjan(data.graph)
     return {"algorithm": "Tarjan", "steps": steps}
 

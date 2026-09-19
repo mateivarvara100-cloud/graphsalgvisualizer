@@ -13,6 +13,7 @@ const CATEGORY_ORDER = config.algorithmCategories;
 export default function Sidebar({ onSelectAlgorithm, onStartQuiz }) {
     const algKeys = Object.keys(config.algorithms);
     const [hoveredAlg, setHoveredAlg] = useState(algKeys[0]);
+    const [mobileTab, setMobileTab] = useState('list'); // 'list' | 'details'
     const algInfo = config.algorithms[hoveredAlg];
     const { latestResults, openHistoryModal } = useQuizResults();
     const { user } = useAuth();
@@ -66,23 +67,53 @@ export default function Sidebar({ onSelectAlgorithm, onStartQuiz }) {
             <div className="landing-top-bar">
                 <UserMenu />
                 <button
+                    type="button"
+                    className="landing-mobile-ai-btn"
+                    onClick={() => window.dispatchEvent(new CustomEvent('toggle-algorbit-ai'))}
+                    title="Ask Algorbit AI (Graph Tutor)"
+                >
+                    <div className="ai-btn-glow" />
+                    <span className="ai-sparkle-icon">✨</span>
+                    <span className="ai-btn-label">Algorbit AI</span>
+                    <span className="ai-status-pulse pulse-live" />
+                </button>
+                <button
                     className="top-bar-history-btn"
                     onClick={openHistoryModal}
                     title={user ? "View all your saved quiz and examination results" : "Quiz history is only saved and viewable with an account"}
                 >
                     <span className="history-icon">📊</span>
-                    <span>Quiz History</span>
+                    <span className="history-label-full">Quiz History</span>
+                    <span className="history-label-short">History</span>
                 </button>
             </div>
 
             <motion.div
-                className="modal glass-modal"
+                className={`modal glass-modal mobile-tab-${mobileTab}`}
                 initial={{ opacity: 0, scale: 0.95, y: 18 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
+                {/* Mobile Tab Switcher (Visible only on <= 768px) */}
+                <div className="landing-mobile-tabs" role="tablist">
+                    <button 
+                        type="button" 
+                        className={`landing-tab-btn ${mobileTab === 'list' ? 'active' : ''}`}
+                        onClick={() => setMobileTab('list')}
+                    >
+                        <span>📚 Algorithms</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        className={`landing-tab-btn ${mobileTab === 'details' ? 'active' : ''}`}
+                        onClick={() => setMobileTab('details')}
+                    >
+                        <span>🔍 Overview</span>
+                    </button>
+                </div>
+
                 {/* Left sidebar */}
-                <div className="sidebar">
+                <div className={`sidebar ${mobileTab === 'details' ? 'mobile-hidden' : ''}`}>
                     <div className="sidebar-header">
                         <div className="sidebar-logo-wrapper">
                             <AlgorbitLogo size={36} className="sidebar-logo" />
@@ -132,7 +163,10 @@ export default function Sidebar({ onSelectAlgorithm, onStartQuiz }) {
                                             key={key}
                                             className={`alg-btn ${isHovered ? 'hovered' : ''}`}
                                             onMouseEnter={() => setHoveredAlg(key)}
-                                            onClick={() => setHoveredAlg(key)}
+                                            onClick={() => {
+                                                setHoveredAlg(key);
+                                                setMobileTab('details');
+                                            }}
                                         >
                                             {isHovered && <span className="active-indicator-pip" />}
                                             <span className="alg-btn-title">{config.algorithms[key].title}</span>
@@ -149,13 +183,13 @@ export default function Sidebar({ onSelectAlgorithm, onStartQuiz }) {
                         ))}
                     </div>
 
-                    <div className="sidebar-hint">
+                    <div className="sidebar-hint desktop-only-hint">
                         <span className="kbd-shortcut"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
                     </div>
                 </div>
 
                 {/* Right description & interactive preview pane */}
-                <div className="description-pane">
+                <div className={`description-pane ${mobileTab === 'list' ? 'mobile-hidden' : ''}`}>
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={hoveredAlg}

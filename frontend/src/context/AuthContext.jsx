@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(null);
                 try {
                     localStorage.removeItem('algorbit_token');
-                } catch (e) {}
+                } catch (e) { }
             }
 
             if (statusRes.status === 'fulfilled') {
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     const continueAsClient = useCallback(() => {
         try {
             sessionStorage.setItem('algorbit_guest_dismissed', 'true');
-        } catch (e) {}
+        } catch (e) { }
         setIsAuthModalOpen(false);
     }, []);
 
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
                 if (res.data.token) {
                     try {
                         localStorage.setItem('algorbit_token', res.data.token);
-                    } catch (e) {}
+                    } catch (e) { }
                 }
                 setUser(res.data.user);
                 closeAuthModal();
@@ -122,7 +122,7 @@ export const AuthProvider = ({ children }) => {
                 if (res.data.token) {
                     try {
                         localStorage.setItem('algorbit_token', res.data.token);
-                    } catch (e) {}
+                    } catch (e) { }
                 }
                 setUser(res.data.user);
                 closeAuthModal();
@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Google OAuth 2.0 Identity Token (Level 6)
+    // Google OAuth 2.0 Identity Token 
     const loginWithGoogle = async (credential, mode = 'login') => {
         try {
             const res = await authApi.post('/google', { credential, mode });
@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }) => {
                 if (res.data.token) {
                     try {
                         localStorage.setItem('algorbit_token', res.data.token);
-                    } catch (e) {}
+                    } catch (e) { }
                 }
                 setUser(res.data.user);
                 closeAuthModal();
@@ -156,7 +156,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Logout (Level 4 session termination)
+    // Logout (session termination)
     const logout = async () => {
         try {
             await authApi.post('/logout');
@@ -168,7 +168,7 @@ export const AuthProvider = ({ children }) => {
                 localStorage.removeItem('algorbit_quiz_history_v1');
                 localStorage.removeItem('algorbit_quiz_history_guest');
                 localStorage.removeItem('algorbit_chat_guest');
-            } catch (e) {}
+            } catch (e) { }
             setUser(null);
         }
     };

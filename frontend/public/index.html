@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://accounts.google.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 ws://localhost:* ws://127.0.0.1:* https://algorbit.onrender.com https://accounts.google.com; img-src 'self' data: https://*.googleusercontent.com; frame-src https://accounts.google.com; object-src 'none'; base-uri 'self';"
+    />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/logo.svg" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.svg" />
@@ -20,15 +24,5 @@
   <body style="margin: 0; padding: 0; background-color: #0f172a; overflow: hidden;">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" style="width: 100%; height: 100%; margin: 0; padding: 0;"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

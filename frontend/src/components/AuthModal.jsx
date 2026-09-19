@@ -59,6 +59,7 @@ export default function AuthModal() {
     }, [isAuthModalOpen, closeAuthModal]);
 
     const googleBtnRef = useRef(null);
+    const googleContainerRef = useRef(null);
 
     // Google Identity Services (Level 6)
     useEffect(() => {
@@ -80,6 +81,7 @@ export default function AuthModal() {
                         }
                     });
 
+                    const containerWidth = googleContainerRef.current?.clientWidth || 360;
                     googleBtnRef.current.innerHTML = '';
                     window.google.accounts.id.renderButton(googleBtnRef.current, {
                         type: 'standard',
@@ -87,7 +89,7 @@ export default function AuthModal() {
                         size: 'large',
                         text: 'continue_with',
                         shape: 'rectangular',
-                        width: 360,
+                        width: containerWidth,
                         locale: 'en'
                     });
                 } catch (err) {
@@ -610,11 +612,12 @@ export default function AuthModal() {
                             </div>
 
                             {/* Level 6: Google OAuth Button with Native Overlay */}
-                            <div className="google-oauth-container">
+                            <div className="google-oauth-container" ref={googleContainerRef}>
                                 <button
                                     type="button"
                                     className="google-oauth-btn"
                                     disabled={isSubmitting}
+                                    onClick={() => window.google?.accounts?.id?.prompt()}
                                 >
                                     <svg className="google-icon" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

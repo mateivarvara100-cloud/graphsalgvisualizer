@@ -16,7 +16,32 @@ const edgeTypes = {
     default: FloatingEdge,
 };
 
-// ── Edge Weight / Capacity Modal ──────────────────────────────────────────
+const ALGORITHM_TAG_NAMES = {
+    BFS: 'Breadth-First Search',
+    DFS: 'Depth-First Search',
+    Dijkstra: 'Dijkstra',
+    FloydWarshall: 'Floyd-Warshall',
+    Kruskal: 'Kruskal',
+    Prim: 'Prim',
+    FordFulkerson: 'Ford-Fulkerson',
+    EdmondsKarp: 'Edmonds-Karp',
+    Kosaraju: 'Kosaraju',
+    Tarjan: 'Tarjan',
+};
+
+function useIsMobile(breakpoint = 900) {
+    const [isMobile, setIsMobile] = useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth <= breakpoint : false
+    );
+    useEffect(() => {
+        const onResize = () => setIsMobile(window.innerWidth <= breakpoint);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, [breakpoint]);
+    return isMobile;
+}
+
+// Edge Weight / Capacity Modal
 function EdgeWeightModal({ edge, isOpen, onClose, onSave, onDelete, isFlow, isDirected, algorithm, onToggleDirected }) {
     const [val, setVal] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
@@ -319,6 +344,7 @@ function EditorCanvas({
     isWeighted,
     algorithm,
     hasStartOption = true,
+    isMobile = false,
     onNodesChange,
     onEdgesChange,
     addNode,
@@ -436,11 +462,11 @@ function EditorCanvas({
                     <div className="empty-card">
                         <div className="empty-icon">📍</div>
                         <h3>The canvas is empty</h3>
-                        <p>Click anywhere to place nodes, or generate a random graph to get started.</p>
+                        <p>{isMobile ? 'Touch anywhere to place nodes, or generate a random graph to get started.' : 'Click anywhere to place nodes, or generate a random graph to get started.'}</p>
                         <div className="empty-shortcuts">
                             <span><kbd>N</kbd> Add Node</span>
                             <span><kbd>E</kbd> Add Edge</span>
-                            {isWeighted && <span>Click edge to edit {isFlow ? 'Capacity' : 'Weight'}</span>}
+                            {isWeighted && <span>{isMobile ? 'Touch' : 'Click'} edge to edit {isFlow ? 'Capacity' : 'Weight'}</span>}
                             <span><kbd>R</kbd> Random Graph</span>
                             <span><kbd>C</kbd> Clear Canvas</span>
                         </div>
@@ -462,11 +488,11 @@ function EditorCanvas({
                 {isWeighted && (
                     <div className="legend-item weight-hint">
                         <span className="legend-pill weight-pill">⚖️ Weighted</span>
-                        <span>Click edge to edit {weightTerm}</span>
+                        <span>{isMobile ? 'Touch' : 'Click'} edge to edit {weightTerm}</span>
                     </div>
                 )}
                 <div className="legend-item subtle">
-                    <span>Right-click any node/edge to delete</span>
+                    <span>{isMobile ? 'Touch any node/edge to delete' : 'Right-click any node/edge to delete'}</span>
                 </div>
             </div>
         </div>
@@ -474,6 +500,7 @@ function EditorCanvas({
 }
 
 export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) {
+    const isMobile = useIsMobile(900);
     const algInfo = config.algorithms[algorithm] || { title: algorithm, complexity: 'O(V + E)' };
     const isWeighted = algInfo.requiresWeighted ?? (algorithm === 'Kruskal' || algorithm === 'Prim' || algorithm === 'Dijkstra' || algorithm === 'FloydWarshall' || algorithm === 'FordFulkerson' || algorithm === 'EdmondsKarp');
     const forcedDirected = algInfo.requiresDirected;   // true | false | null
@@ -510,8 +537,9 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
         onVisualize(getGraphData());
     };
 
-    // ── Keyboard shortcuts ──────────────────────────────────────────────
+    // Keyboard shortcuts (Disabled on mobile/tablets)
     const handleKeyDown = useCallback((e) => {
+        if (isMobile) return;
         if (editingEdge) return;
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.ctrlKey || e.metaKey) {
@@ -529,28 +557,37 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
             case 'escape': setEdgeSource(null); break;
             default: break;
         }
-    }, [editingEdge, hasStartOption, setEditMode, generateRandom, clearAll, setEdgeSource, undo, redo]);
+    }, [isMobile, editingEdge, hasStartOption, setEditMode, generateRandom, clearAll, setEdgeSource, undo, redo]);
 
     useEffect(() => {
+        if (isMobile) return;
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [handleKeyDown]);
+    }, [isMobile, handleKeyDown]);
 
-    // ── Instruction banner ──────────────────────────────────────────────
+    // Instruction banner
+    const actionVerb = isMobile ? 'Touch' : 'Click';
+    const actionVerbLower = isMobile ? 'touch' : 'click';
+
     const getInstructionText = () => {
         switch (editMode) {
             case 'node':
-                if (isFlow) return 'Layered Flow Network: Source (s) on left ➔ Sink (t) on right. Click canvas to add nodes, drag to reposition.';
-                return 'Click anywhere on the canvas to place a node. Drag nodes to reposition.';
+                if (isFlow) return `Layered Flow Network: Source (s) on left ➔ Sink (t) on right. ${actionVerb} canvas to add nodes, drag to reposition.`;
+                return `${actionVerb} anywhere on the canvas to place a node. Drag nodes to reposition.`;
             case 'edge':
                 if (!edgeSource) return isWeighted
-                    ? `Click a node to connect, or click any edge to edit its ${weightTerm.toLowerCase()}.`
-                    : 'Click a node to set it as the edge source.';
-                return `Connecting from "${edgeSource}"… Click target node (or click "${edgeSource}" for a self-loop), or click canvas to cancel.`;
+                    ? `${actionVerb} a node to connect, or ${actionVerbLower} any edge to edit its ${weightTerm.toLowerCase()}.`
+                    : `${actionVerb} a node to set it as the edge source.`;
+                return `Connecting from "${edgeSource}"… ${actionVerb} target node (or ${actionVerbLower} "${edgeSource}" for a self-loop), or ${actionVerbLower} canvas to cancel.`;
             case 'start':
-                if (isFlow) return "Click any node to designate it as the source vertex s for the flow network.";
-                return 'Click any node to designate it as the algorithm start node.';
-            case 'delete': return 'Click any node or edge to delete it. (You can also right-click anytime).';
+                if (isFlow) return `${actionVerb} any node to designate it as the source vertex s for the flow network.`;
+                return `${actionVerb} any node to designate it as the algorithm start node.`;
+            case 'delete':
+                return (
+                    <>
+                        {actionVerb} any node or edge to delete it. <span className="desktop-hint">(You can also right-click anytime).</span>
+                    </>
+                );
             default: return '';
         }
     };
@@ -565,7 +602,7 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
                 <div className="editor-left-section">
                     <button type="button" className="back-ghost-btn" onClick={onBack} title="Back to Algorithms">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         <span>Algorithms</span>
                     </button>
@@ -622,22 +659,22 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
                     {/* Mode Buttons */}
                     <div className="mode-btn-group">
                         {[
-                            { mode: 'node',   icon: '➕', label: 'Node',     title: 'Add Node – click canvas' },
-                            { mode: 'edge',   icon: '🔗', label: 'Edge',     title: 'Add Edge – click source then target' },
+                            { mode: 'node', icon: '➕', label: 'Node', title: isMobile ? 'Add Node – touch canvas' : 'Add Node – click canvas' },
+                            { mode: 'edge', icon: '🔗', label: 'Edge', title: isMobile ? 'Add Edge – touch source then target' : 'Add Edge – click source then target' },
                             ...(hasStartOption ? [{
                                 mode: 'start',
                                 icon: '⭐',
                                 label: isFlow ? 'Source' : 'Start',
                                 title: isFlow ? 'Set flow source node (s)' : 'Set start node'
                             }] : []),
-                            { mode: 'delete', icon: '🗑️', label: 'Delete',   title: 'Delete – click node or edge', danger: true },
+                            { mode: 'delete', icon: '🗑️', label: 'Delete', title: isMobile ? 'Delete – touch node or edge' : 'Delete – click node or edge', danger: true },
                         ].map(({ mode, icon, label, title, danger }) => (
                             <button
                                 key={mode}
                                 type="button"
                                 className={`mode-btn ${danger ? 'danger-mode' : ''} ${editMode === mode ? 'active' : ''}`}
                                 onClick={() => setEditMode(mode)}
-                                title={`${title} [${modeShortcutMap[mode]}]`}
+                                title={isMobile ? title : `${title} [${modeShortcutMap[mode]}]`}
                             >
                                 <span className="btn-icon">{icon}</span>
                                 <span>{label}</span>
@@ -650,19 +687,19 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
 
                     {/* Utility Actions */}
                     <div className="editor-action-group">
-                        <button type="button" className="util-btn icon-only" onClick={undo} disabled={!canUndo} title="Undo [Ctrl+Z]">
+                        <button type="button" className="util-btn icon-only" onClick={undo} disabled={!canUndo} title={isMobile ? "Undo" : "Undo [Ctrl+Z]"}>
                             <span className="btn-icon">↩</span>
                         </button>
-                        <button type="button" className="util-btn icon-only" onClick={redo} disabled={!canRedo} title="Redo [Ctrl+Shift+Z]">
+                        <button type="button" className="util-btn icon-only" onClick={redo} disabled={!canRedo} title={isMobile ? "Redo" : "Redo [Ctrl+Shift+Z]"}>
                             <span className="btn-icon">↪</span>
                         </button>
                         <div className="toolbar-divider mini" />
-                        <button type="button" className="util-btn" onClick={() => generateRandom()} title="Random graph [R]">
+                        <button type="button" className="util-btn" onClick={() => generateRandom()} title={isMobile ? "Random graph" : "Random graph [R]"}>
                             <span className="btn-icon">🎲</span>
                             <span>Random</span>
                             <kbd className="kbd-hint">R</kbd>
                         </button>
-                        <button type="button" className="util-btn" onClick={clearAll} title="Clear canvas [C]">
+                        <button type="button" className="util-btn" onClick={clearAll} title={isMobile ? "Clear canvas" : "Clear canvas [C]"}>
                             <span className="btn-icon">🧹</span>
                             <span>Clear</span>
                             <kbd className="kbd-hint">C</kbd>
@@ -678,7 +715,7 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
                         <span className="stats-chip">{edges.length} <span className="stats-label">edges</span></span>
                     </div>
                     <span className="alg-tag" title={algInfo.title}>
-                        {algInfo.title.replace(' Algorithm', '').replace(' Search', '')}
+                        {ALGORITHM_TAG_NAMES[algorithm] || algInfo.title}
                     </span>
                     <button
                         type="button"
@@ -688,12 +725,64 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
                     >
                         <span>Visualize</span>
                         <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-                            <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </button>
                     <UserMenu />
                 </div>
             </header>
+
+            {/* Mobile Context & Metadata Strip (Visible only on <= 900px) */}
+            <div className="editor-mobile-meta-bar">
+                <div className="mobile-meta-row">
+                    <span className="alg-tag" title={algInfo.title}>
+                        {ALGORITHM_TAG_NAMES[algorithm] || algInfo.title}
+                    </span>
+                    <div className="graph-stats">
+                        <span className="stats-chip">{nodes.length} <span className="stats-label">nodes</span></span>
+                        <span className="stats-sep">·</span>
+                        <span className="stats-chip">{edges.length} <span className="stats-label">edges</span></span>
+                    </div>
+                </div>
+
+                <div className="mobile-meta-row mobile-meta-secondary">
+                    {forcedDirected !== null ? (
+                        <div
+                            className={`graph-type-badge ${forcedDirected ? 'directed' : 'undirected'}`}
+                            title={forcedDirected ? 'This algorithm requires a directed graph' : 'MST algorithms require an undirected graph'}
+                        >
+                            <span className="badge-icon">{forcedDirected ? '➔' : '⬡'}</span>
+                            <span className="badge-text">{forcedDirected ? 'Directed' : 'Undirected'}</span>
+                            <span className="badge-subtitle">
+                                {algorithm === 'Kruskal' || algorithm === 'Prim'
+                                    ? 'MST'
+                                    : isFlow
+                                        ? 'Flow'
+                                        : 'SCC'}
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="graph-type-toggle">
+                            <button
+                                type="button"
+                                className={`toggle-option ${!isDirected ? 'active' : ''}`}
+                                onClick={() => setIsDirected(false)}
+                                title="Undirected graph"
+                            >
+                                Undirected
+                            </button>
+                            <button
+                                type="button"
+                                className={`toggle-option ${isDirected ? 'active' : ''}`}
+                                onClick={() => setIsDirected(true)}
+                                title="Directed graph"
+                            >
+                                Directed
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
 
             {/* Mode Instruction Banner */}
             <div className={`editor-instruction-bar mode-${editMode} ${edgeSource ? 'connecting' : ''}`}>
@@ -707,7 +796,7 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
                 <span className="instruction-text">{getInstructionText()}</span>
                 {edgeSource && (
                     <button type="button" className="cancel-edge-btn" onClick={() => setEdgeSource(null)}>
-                        Cancel <kbd>Esc</kbd>
+                        Cancel {!isMobile && <kbd>Esc</kbd>}
                     </button>
                 )}
             </div>
@@ -721,6 +810,7 @@ export default function GraphEditor({ algorithm = 'BFS', onBack, onVisualize }) 
                         isDirected={isDirected} isWeighted={isWeighted}
                         algorithm={algorithm}
                         hasStartOption={hasStartOption}
+                        isMobile={isMobile}
                         onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}
                         addNode={addNode} addEdge={addEdge} deleteNode={deleteNode}
                         deleteEdge={deleteEdge} onEditEdgeWeight={setEditingEdge}

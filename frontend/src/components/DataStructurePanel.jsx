@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// ── Floyd-Warshall distance matrix panel ───────────────────────────────
 function MatrixPanel({ distMatrix, activeK, activeI, activeJ, negativeCycleInfo }) {
     if (!distMatrix) {
         return (
@@ -94,7 +93,6 @@ function MatrixPanel({ distMatrix, activeK, activeI, activeJ, negativeCycleInfo 
     );
 }
 
-// ── Ford-Fulkerson Flow Network Panel ──────────────────────────────────
 function FlowNetworkPanel({ flowInfo, maxFlow, items = [], algorithm }) {
     const { pathStr, bottleneck, minCutS, minCutT, saturatedEdges, iteration } = flowInfo || {};
     const isFF = algorithm === 'FordFulkerson';
@@ -204,7 +202,6 @@ function FlowNetworkPanel({ flowInfo, maxFlow, items = [], algorithm }) {
     );
 }
 
-// ── Strongly Connected Components Panel (Kosaraju & Tarjan) ───────────
 function SccPanel({ algorithm, phase, stackItems = [], sccList = [] }) {
     const isKosaraju = algorithm === 'Kosaraju';
     const stackLabel = isKosaraju
@@ -306,7 +303,6 @@ function SccPanel({ algorithm, phase, stackItems = [], sccList = [] }) {
     );
 }
 
-// ── Priority Queue panel (Prim & Dijkstra) ───────────────────────────────
 function PriorityQueuePanel({ algorithm, items = [] }) {
     const isPrim = algorithm === 'Prim';
     const isDijkstra = algorithm === 'Dijkstra';
@@ -326,8 +322,8 @@ function PriorityQueuePanel({ algorithm, items = [] }) {
                             <motion.div key="empty" className="ds-empty">empty (Q = ∅)</motion.div>
                         ) : (
                             items.map((item, index) => {
-                                const nodeName    = typeof item === 'object' ? item.node : item;
-                                const keyDisplay  = typeof item === 'object'
+                                const nodeName = typeof item === 'object' ? item.node : item;
+                                const keyDisplay = typeof item === 'object'
                                     ? (item.key_display ?? (item.key !== null && item.key !== undefined ? item.key : '∞'))
                                     : '';
                                 const piDisplay = typeof item === 'object' && item.pi ? `π:${item.pi}` : null;
@@ -357,7 +353,6 @@ function PriorityQueuePanel({ algorithm, items = [] }) {
     );
 }
 
-// ── Disjoint Sets panel (Kruskal) ────────────────────────────────────────
 function DisjointSetsPanel({ sets = [] }) {
     return (
         <div className="ds-panel ds-panel-disjoint">
@@ -394,10 +389,9 @@ function DisjointSetsPanel({ sets = [] }) {
     );
 }
 
-// ── Queue / Stack panel (BFS / DFS) ──────────────────────────────────────
 function QueueStackPanel({ type, items = [] }) {
-    const label     = type === 'queue' ? 'Queue Q (FIFO)' : 'Stack S (LIFO)';
-    const iconLeft  = type === 'queue' ? '⟵ Dequeue' : '⟵ Pop';
+    const label = type === 'queue' ? 'Queue Q (FIFO)' : 'Stack S (LIFO)';
+    const iconLeft = type === 'queue' ? '⟵ Dequeue' : '⟵ Pop';
     const iconRight = type === 'queue' ? 'Enqueue ⟶' : 'Push ⟶';
 
     return (
@@ -443,7 +437,6 @@ function QueueStackPanel({ type, items = [] }) {
     );
 }
 
-// ── Main export ──────────────────────────────────────────────────────────
 export default function DataStructurePanel({
     type, items = [], distMatrix, negativeCycleInfo, algorithm,
     flowInfo, maxFlow, sccList = [], phase,

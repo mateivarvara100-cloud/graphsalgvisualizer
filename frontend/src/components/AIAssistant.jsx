@@ -237,6 +237,15 @@ export default function AIAssistant({
         }
     }, [isQuizActive]);
 
+    // Listen for custom trigger from top-bar or external components
+    useEffect(() => {
+        const handleToggleAI = () => {
+            setIsOpen(prev => !prev);
+        };
+        window.addEventListener('toggle-algorbit-ai', handleToggleAI);
+        return () => window.removeEventListener('toggle-algorbit-ai', handleToggleAI);
+    }, []);
+
     // Switch chat thread when user logs in, logs out, or switches accounts
     useEffect(() => {
         const currentId = user?.id || user?._id || null;

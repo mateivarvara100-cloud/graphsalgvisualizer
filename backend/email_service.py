@@ -186,16 +186,16 @@ If you did not request a password reset, you can safely ignore this email.
         except Exception as e:
             print(f"⚠️ [EMAIL SERVICE] SMTP delivery failed ({e}). Falling back to dispatcher log.")
 
-    print(f"\n" + "=" * 68)
-    print(f"📧 [EMAIL DISPATCHER] Password Reset Request for: {to_email}")
-    print(f"🔑 6-DIGIT VERIFICATION CODE: {reset_code}")
-    print(f"⏱️  EXPIRES IN: 15 minutes")
-    if not (config["host"] and config["user"] and config["password"]):
-        print(f"ℹ️  [SMTP CONFIG] To deliver directly to recipient inboxes, configure SMTP_USER & SMTP_PASSWORD in backend/.env")
-    print("=" * 68 + "\n")
-
     is_prod = os.getenv("ENVIRONMENT", "development").lower() == "production"
     if not is_prod:
+        print(f"\n" + "=" * 68)
+        print(f"📧 [EMAIL DISPATCHER] Password Reset Request for: {to_email}")
+        print(f"🔑 6-DIGIT VERIFICATION CODE: {reset_code}")
+        print(f"⏱️  EXPIRES IN: 15 minutes")
+        if not (config["host"] and config["user"] and config["password"]):
+            print(f"ℹ️  [SMTP CONFIG] To deliver directly to recipient inboxes, configure SMTP_USER & SMTP_PASSWORD in backend/.env")
+        print("=" * 68 + "\n")
+
         try:
             log_path = os.path.join(os.path.dirname(__file__), "sent_emails.log")
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -203,5 +203,10 @@ If you did not request a password reset, you can safely ignore this email.
                 f.write(f"[{timestamp}] Recipient: {to_email} | Reset Code: {reset_code} | Expires in: 15 mins\n")
         except Exception:
             pass
+    else:
+        # In production, securely mask email and strictly suppress plaintext verification codes from server logs
+        masked_user = to_email.split("@")[0][:2] + "***" if "@" in to_email else "***"
+        domain = to_email.split("@")[-1] if "@" in to_email else ""
+        print(f"⚠️ [EMAIL SERVICE] SMTP delivery unavailable in production for {masked_user}@{domain}. Reset verification code was suppressed from server logs.")
 
     return {"success": True, "method": "logged", "delivered": False}

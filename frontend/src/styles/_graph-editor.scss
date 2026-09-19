@@ -1,5 +1,3 @@
-// Graph Editor Screen
-// ═══════════════════════════════════════════════════════════════
 .graph-editor-view {
     display: flex;
     flex-direction: column;
@@ -9,9 +7,8 @@
     background: $bg-canvas;
     font-family: 'Inter', sans-serif;
 
-    // ── Editor Top Bar ──
     .editor-top-bar {
-        background: 
+        background:
             radial-gradient(ellipse 65% 120% at 50% -30%, rgba(56, 189, 248, 0.16), transparent 70%),
             radial-gradient(ellipse 40% 100% at 88% -10%, rgba(129, 140, 248, 0.14), transparent 60%),
             radial-gradient(ellipse 35% 100% at 12% -10%, rgba(14, 165, 233, 0.10), transparent 60%),
@@ -33,7 +30,6 @@
         box-sizing: border-box;
         width: 100%;
 
-        // Sleek glowing bottom neon beam
         &::after {
             content: '';
             position: absolute;
@@ -41,14 +37,13 @@
             left: 0;
             right: 0;
             height: 1.5px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(56, 189, 248, 0.2) 15%, 
-                rgba(56, 189, 248, 0.75) 35%, 
-                rgba(129, 140, 248, 0.75) 65%, 
-                rgba(16, 185, 129, 0.5) 85%, 
-                transparent 100%
-            );
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(56, 189, 248, 0.2) 15%,
+                    rgba(56, 189, 248, 0.75) 35%,
+                    rgba(129, 140, 248, 0.75) 65%,
+                    rgba(16, 185, 129, 0.5) 85%,
+                    transparent 100%);
             pointer-events: none;
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
         }
@@ -67,7 +62,6 @@
             }
         }
 
-        // ── Left Section: Navigation, Logo/Title & Graph Type ──
         .editor-left-section {
             display: flex;
             align-items: center;
@@ -215,7 +209,6 @@
             }
         }
 
-        // ── Center Section: Editing Modes & Actions ──
         .editor-center-section {
             display: flex;
             align-items: center;
@@ -348,7 +341,6 @@
             }
         }
 
-        // ── Right Section: Stats, Tag & CTA ──
         .editor-right-section {
             display: flex;
             align-items: center;
@@ -439,6 +431,7 @@
         }
 
         @media (max-width: 1260px) {
+
             .editor-center-section .mode-btn-group .mode-btn .kbd-hint,
             .editor-center-section .editor-action-group .util-btn .kbd-hint {
                 display: none;
@@ -452,9 +445,266 @@
                 display: none;
             }
         }
+
+        @media (max-width: 900px) {
+            height: auto;
+            flex-wrap: wrap;
+            padding: 8px 12px;
+            gap: 8px;
+
+            .editor-left-section {
+                order: 1;
+                flex: 1 1 auto;
+                max-width: calc(100% - 175px);
+                gap: 6px;
+
+                .back-ghost-btn {
+                    padding: 5px 8px;
+
+                    span {
+                        display: none;
+                    }
+                }
+
+                .editor-title-container h2 {
+                    font-size: 13px;
+                }
+
+                .toolbar-divider {
+                    display: none;
+                }
+
+                .graph-type-badge,
+                .graph-type-toggle {
+                    display: none;
+                }
+            }
+
+            .editor-right-section {
+                order: 2;
+                margin-left: auto;
+                gap: 6px;
+                flex-shrink: 0;
+
+                .graph-stats,
+                .alg-tag {
+                    display: none;
+                }
+
+                .visualize-cta-btn {
+                    padding: 6px 12px;
+                    font-size: 12px;
+                }
+            }
+
+            .editor-center-section {
+                order: 3;
+                width: 100% !important;
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+                display: flex !important;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 4px 0 2px;
+                gap: 5px;
+
+                .toolbar-divider:not(.mini) {
+                    display: none;
+                }
+
+                .mode-btn-group {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    .mode-btn {
+                        flex: 1 1 0;
+                        justify-content: center;
+                        min-width: 0;
+                        padding: 5px 6px;
+                        font-size: 11.5px;
+                        touch-action: manipulation;
+                        height: 32px;
+                        white-space: nowrap;
+                        border-radius: 7px;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 3px;
+                    }
+                }
+
+                .editor-action-group {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    .util-btn {
+                        padding: 5px 8px;
+                        font-size: 11.5px;
+                        touch-action: manipulation;
+                        height: 32px;
+                        white-space: nowrap;
+                        border-radius: 7px;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 4px;
+
+                        &.icon-only {
+                            flex: 0 0 34px;
+                            justify-content: center;
+                            padding: 0;
+                        }
+
+                        &:not(.icon-only) {
+                            flex: 1 1 0;
+                            justify-content: center;
+                            min-width: 0;
+
+                            span:not(.btn-icon) {
+                                display: inline !important;
+                            }
+                        }
+                    }
+
+                    .toolbar-divider.mini {
+                        height: 18px;
+                        margin: 0 2px;
+                    }
+                }
+            }
+        }
     }
 
-    // ── Instruction Banner ──
+    .editor-mobile-meta-bar {
+        display: none;
+
+        @media (max-width: 900px) {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 6px 12px;
+            gap: 6px;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            flex-shrink: 0;
+            z-index: 18;
+
+            .mobile-meta-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 8px;
+
+                &.mobile-meta-secondary {
+                    justify-content: flex-start;
+                }
+            }
+
+            .alg-tag {
+                display: inline-flex;
+                align-items: center;
+                font-size: 10.5px;
+                font-weight: 600;
+                padding: 3.5px 7.5px;
+                border-radius: 5px;
+                background: rgba($accent-blue, 0.12);
+                color: #93c5fd;
+                border: 1px solid rgba($accent-blue, 0.25);
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .graph-type-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 3px 7px;
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 600;
+                white-space: nowrap;
+                flex-shrink: 0;
+
+                &.directed {
+                    background: rgba(14, 165, 233, 0.14);
+                    border: 1px solid rgba(56, 189, 248, 0.35);
+                    color: #38bdf8;
+                }
+
+                &.undirected {
+                    background: rgba(168, 85, 247, 0.14);
+                    border: 1px solid rgba(192, 132, 252, 0.35);
+                    color: #c084fc;
+                }
+
+                .badge-subtitle {
+                    font-size: 9.5px;
+                    padding: 1px 4px;
+                    border-radius: 4px;
+                    background: rgba(255, 255, 255, 0.12);
+                    text-transform: uppercase;
+                    font-weight: 800;
+                    letter-spacing: 0.5px;
+                }
+            }
+
+            .graph-type-toggle {
+                display: inline-flex;
+                background: rgba(15, 23, 42, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 6px;
+                padding: 1px;
+                flex-shrink: 0;
+
+                .toggle-option {
+                    padding: 2px 7px;
+                    font-size: 10.5px;
+                    font-weight: 600;
+                    border: none;
+                    background: transparent;
+                    color: #94a3b8;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    &.active {
+                        background: rgba(56, 189, 248, 0.2);
+                        color: #38bdf8;
+                    }
+                }
+            }
+
+            .graph-stats {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 3px 8px;
+                background: rgba(15, 23, 42, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 6px;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11px;
+                font-weight: 600;
+                color: #94a3b8;
+                white-space: nowrap;
+                flex-shrink: 0;
+
+                .stats-chip {
+                    color: #e2e8f0;
+                }
+
+                .stats-sep {
+                    color: #64748b;
+                }
+            }
+        }
+    }
+
     .editor-instruction-bar {
         height: 36px;
         background: #1e293b;
@@ -470,12 +720,29 @@
         flex-shrink: 0;
         transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 
+        @media (max-width: 768px) {
+            height: auto;
+            min-height: 32px;
+            padding: 6px 12px;
+            font-size: 11px;
+            line-height: 1.4;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
         .instruction-icon {
             font-size: 13px;
         }
 
         .instruction-text {
             font-weight: 500;
+
+            .desktop-hint {
+                @media (max-width: 768px) {
+                    display: none !important;
+                }
+            }
         }
 
         &.mode-delete {
@@ -520,13 +787,18 @@
                 opacity: 0.7;
             }
 
+            @media (max-width: 768px) {
+                kbd {
+                    display: none !important;
+                }
+            }
+
             &:hover {
                 background: #78350f;
             }
         }
     }
 
-    // ── Canvas Container ──
     .editor-canvas-container {
         flex: 1;
         width: 100%;
@@ -591,7 +863,6 @@
             }
         }
 
-        // ── Empty state overlay ──
         .editor-empty-overlay {
             position: absolute;
             top: 50%;
@@ -645,10 +916,24 @@
                         font-family: 'JetBrains Mono', monospace;
                     }
                 }
+
+                @media (max-width: 768px) {
+                    padding: 16px 18px;
+                    width: 90vw;
+                    max-width: 320px;
+
+                    p {
+                        font-size: 12px;
+                        margin-bottom: 8px;
+                    }
+
+                    .empty-shortcuts {
+                        display: none;
+                    }
+                }
             }
         }
 
-        // ── In-canvas legend ──
         .editor-legend {
             position: absolute;
             bottom: 16px;
@@ -660,6 +945,23 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+
+            @media (max-width: 768px) {
+                display: flex !important;
+                bottom: 12px;
+                left: 10px;
+                padding: 6px 10px;
+                gap: 4px;
+                border-radius: 8px;
+                font-size: 10.5px;
+                max-width: calc(100vw - 120px);
+
+                .legend-item {
+                    gap: 5px;
+                    white-space: nowrap;
+                }
+            }
+
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             border: 1px solid #e2e8f0;
             z-index: 10;
@@ -726,7 +1028,6 @@
     pointer-events: none;
 }
 
-// ── Edge Weight / Capacity Modal ──
 .edge-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -1064,8 +1365,3 @@
         }
     }
 }
-
-// ═══════════════════════════════════════════════════════════════
-// ALGORBIT AUTHENTICATION & USER MANAGEMENT STYLES (LEVELS 1–6)
-// ═══════════════════════════════════════════════════════════════
-

@@ -1,18 +1,5 @@
 import React from 'react';
 
-/**
- * QuizGraphCanvas - Visualizer-Matched Academic Graph Renderer
- * 
- * Accurately replicates the main visualizer's canvas aesthetics:
- * - Clean off-white canvas background (#f8fafc) with subtle dot grid
- * - AcademicNode appearance: 50px white circular node (#ffffff), 2.5px dark slate border (#334155),
- *   bold JetBrains Mono label (#1e293b), clean subtle drop-shadow
- * - Start / Source / Sink / Target role badges (★ / s / t / T) matching AcademicNode badges
- * - FloatingEdge appearance: 2.4px crisp slate lines (#64748b) with solid arrowheads (#334155)
- * - Large, crisp white weight/capacity pills (#ffffff, border #cbd5e1, dark mono text #0f172a, 12px font)
- * - Automatic curved routing for reverse edge pairs to prevent overlap
- * - Strictly NO animation (pure static rendering, instant and crisp)
- */
 export default function QuizGraphCanvas({ graph, mini = false }) {
     if (!graph || !graph.nodes || graph.nodes.length === 0) {
         return null;
@@ -301,8 +288,8 @@ export default function QuizGraphCanvas({ graph, mini = false }) {
                         const { edge, idx, pathData, labelT } = pInfo;
                         const labelPos = getPointOnEdge(pInfo, labelT);
 
-                        const weightLabel = edge.weight !== undefined 
-                            ? (edge.capacity !== undefined ? `${edge.weight}/${edge.capacity}` : `${edge.weight}`) 
+                        const weightLabel = edge.weight !== undefined
+                            ? (edge.capacity !== undefined ? `${edge.weight}/${edge.capacity}` : `${edge.weight}`)
                             : (edge.label || (edge.capacity !== undefined ? `${edge.capacity}` : null));
 
                         const labelStr = weightLabel != null ? String(weightLabel) : '';

@@ -284,8 +284,13 @@ export default function QuizModal({ algorithm, onClose, onVisualizeGraph, isMini
                 {hasChosenMode && !isSubmitted && (
                     <div className="quiz-progress-section">
                         <div className="quiz-progress-meta">
-                            <div className="progress-tags">
+                            <div className="progress-top-row">
                                 <span className="q-counter">Question <strong>{currentIndex + 1}</strong> of {totalQuestions}</span>
+                                <div className="progress-stats mobile-progress-stats">
+                                    <span>Answered: <strong>{Object.keys(userAnswers).length}/{totalQuestions}</strong></span>
+                                </div>
+                            </div>
+                            <div className="progress-tags">
                                 {currentQ.difficulty && (
                                     <span className={`diff-tag diff-${currentQ.difficulty.toLowerCase()}`}>
                                         {currentQ.difficulty}
@@ -297,8 +302,8 @@ export default function QuizModal({ algorithm, onClose, onVisualizeGraph, isMini
                                     </span>
                                 )}
                             </div>
-                            <div className="progress-stats">
-                                <span>Answered: {Object.keys(userAnswers).length}/{totalQuestions}</span>
+                            <div className="progress-stats desktop-progress-stats">
+                                <span>Answered: <strong>{Object.keys(userAnswers).length}/{totalQuestions}</strong></span>
                             </div>
                         </div>
                         <div className="quiz-progress-track">

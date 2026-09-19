@@ -44,6 +44,7 @@ function AppContent() {
 
     const [currentView, setCurrentView] = useState(initialView);
     const [activeAlg,   setActiveAlg]   = useState(initialAlg);
+    const [visualizerMobileTab, setVisualizerMobileTab] = useState('canvas'); // 'canvas' | 'code' | 'data'
     const [activeQuiz,       setActiveQuiz]       = useState(null);
     const [isQuizMinimized,  setIsQuizMinimized]  = useState(false);
     const [quizReturnInfo,   setQuizReturnInfo]   = useState(null);
@@ -173,45 +174,69 @@ function AppContent() {
                         {/* Top bar */}
                         <div className="top-bar">
                             <div className="left-controls">
-                                <button className="back-ghost-btn" onClick={handleBackToEditor} title="Back to Graph Editor">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                    Edit Graph
-                                </button>
-                                {isQuizMinimized && quizReturnInfo && (
-                                    <button 
-                                        className="topbar-return-quiz-btn"
-                                        onClick={handleResumeQuiz}
-                                        title="Return to your active quiz session"
+                                <div className="topbar-row-nav">
+                                    <div className="nav-btns">
+                                        <button className="back-ghost-btn" onClick={handleBackToEditor} title="Back to Graph Editor">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                            Edit Graph
+                                        </button>
+                                        {isQuizMinimized && quizReturnInfo && (
+                                            <button 
+                                                className="topbar-return-quiz-btn"
+                                                onClick={handleResumeQuiz}
+                                                title="Return to your active quiz session"
+                                            >
+                                                <span className="quiz-return-icon">📋</span>
+                                                <span>Return to Quiz</span>
+                                                <span className="quiz-return-badge">
+                                                    {quizReturnInfo.isReview ? 'Review' : `Q ${quizReturnInfo.currentQNum}/${quizReturnInfo.totalQuestions}`}
+                                                </span>
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="mobile-user-menu">
+                                        <UserMenu />
+                                    </div>
+                                </div>
+
+                                <div className="topbar-row-info">
+                                    <div className="alg-meta">
+                                        <h2>{algConf.title || activeAlg}</h2>
+                                        <span className="complexity-badge">{algConf.complexity}</span>
+                                        {isMst && (
+                                            <div className="mst-weight-badge" title="Total weight of edges in MST">
+                                                <span className="weight-label">MST Weight:</span>
+                                                <span className="weight-value">{totalWeight}</span>
+                                            </div>
+                                        )}
+                                        {isFlow && (
+                                            <div className="mst-weight-badge flow-badge" title="Total maximum flow">
+                                                <span className="weight-label">Max Flow:</span>
+                                                <span className="weight-value">{maxFlow ?? 0}</span>
+                                            </div>
+                                        )}
+                                        {activeAlg === 'Kosaraju' && (
+                                            <div className={`mst-weight-badge scc-phase-top-badge phase-${phase}`} title="Kosaraju algorithm phase">
+                                                <span className="weight-label">{phase === 2 ? 'Pass 2:' : 'Pass 1:'}</span>
+                                                <span className="weight-value">{phase === 2 ? 'DFS on Gᵀ' : 'DFS on G'}</span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        className="topbar-ai-btn mobile-ai-btn"
+                                        onClick={() => window.dispatchEvent(new CustomEvent('toggle-algorbit-ai'))}
+                                        title="Ask Algorbit AI (Graph Tutor)"
                                     >
-                                        <span className="quiz-return-icon">📋</span>
-                                        <span>Return to Quiz</span>
-                                        <span className="quiz-return-badge">
-                                            {quizReturnInfo.isReview ? 'Review' : `Q ${quizReturnInfo.currentQNum}/${quizReturnInfo.totalQuestions}`}
-                                        </span>
+                                        <div className="ai-btn-glow" />
+                                        <span className="topbar-ai-icon">✨</span>
+                                        <span className="topbar-ai-label">Algorbit AI</span>
+                                        <span className="topbar-ai-dot" />
                                     </button>
-                                )}
-                                <h2>{algConf.title || activeAlg}</h2>
-                                <span className="complexity-badge">{algConf.complexity}</span>
-                                {isMst && (
-                                    <div className="mst-weight-badge" title="Total weight of edges in MST">
-                                        <span className="weight-label">MST Weight:</span>
-                                        <span className="weight-value">{totalWeight}</span>
-                                    </div>
-                                )}
-                                {isFlow && (
-                                    <div className="mst-weight-badge flow-badge" title="Total maximum flow">
-                                        <span className="weight-label">Max Flow:</span>
-                                        <span className="weight-value">{maxFlow ?? 0}</span>
-                                    </div>
-                                )}
-                                {activeAlg === 'Kosaraju' && (
-                                    <div className={`mst-weight-badge scc-phase-top-badge phase-${phase}`} title="Kosaraju algorithm phase">
-                                        <span className="weight-label">{phase === 2 ? 'Pass 2:' : 'Pass 1:'}</span>
-                                        <span className="weight-value">{phase === 2 ? 'DFS on Gᵀ' : 'DFS on G'}</span>
-                                    </div>
-                                )}
+                                </div>
                             </div>
 
                             <div className="center-controls">
@@ -230,6 +255,10 @@ function AppContent() {
 
                                 {/* Playback controls */}
                                 <div className="playback-controls">
+                                    <button className="reset-btn mobile-reset-btn" onClick={resetGraph} title="Reset Graph">
+                                        Reset
+                                    </button>
+
                                     {!isRunning && !isFinished && (
                                         <button className="play-btn" onClick={() => runAlgorithm(activeAlg)}>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -302,8 +331,8 @@ function AppContent() {
                                 )}
                             </div>
 
-                            <div className="right-controls">
-                                <button className="reset-btn" onClick={resetGraph}>Reset</button>
+                            <div className="right-controls desktop-only-controls">
+                                <button className="reset-btn desktop-reset-btn" onClick={resetGraph}>Reset</button>
                                 <UserMenu />
                                 <div className="brand-pill" title="Algorbit — Graph Algorithm Visualizer">
                                     <AlgorbitLogo size={22} />
@@ -322,12 +351,39 @@ function AppContent() {
                             />
                         </div>
 
-                        {/* Main content */}
-                        <div className="main-content">
-                            <PseudocodePanel algorithm={activeAlg} activeLine={activeLine} />
+                        {/* Mobile View Switcher (Visible on <= 768px) */}
+                        <div className="visualizer-mobile-tabs" role="tablist">
+                            <button
+                                type="button"
+                                className={`viz-tab-btn ${visualizerMobileTab === 'canvas' ? 'active' : ''}`}
+                                onClick={() => setVisualizerMobileTab('canvas')}
+                            >
+                                <span>🎨 Canvas</span>
+                            </button>
+                            <button
+                                type="button"
+                                className={`viz-tab-btn ${visualizerMobileTab === 'code' ? 'active' : ''}`}
+                                onClick={() => setVisualizerMobileTab('code')}
+                            >
+                                <span>📄 Pseudocode</span>
+                            </button>
+                            <button
+                                type="button"
+                                className={`viz-tab-btn ${visualizerMobileTab === 'data' ? 'active' : ''}`}
+                                onClick={() => setVisualizerMobileTab('data')}
+                            >
+                                <span>📊 Data State</span>
+                            </button>
+                        </div>
 
-                            <div className="canvas-area">
-                                <div className="canvas-container">
+                        {/* Main content */}
+                        <div className={`main-content mobile-tab-${visualizerMobileTab}`}>
+                            <div className={`pseudocode-wrapper ${visualizerMobileTab !== 'code' ? 'mobile-hidden' : ''}`}>
+                                <PseudocodePanel algorithm={activeAlg} activeLine={activeLine} />
+                            </div>
+
+                            <div className={`canvas-area ${visualizerMobileTab === 'code' ? 'mobile-hidden' : ''}`}>
+                                <div className={`canvas-container ${visualizerMobileTab === 'data' ? 'mobile-hidden' : ''}`}>
                                     <ReactFlowProvider>
                                         <ReactFlow
                                             nodes={nodes}
@@ -361,20 +417,22 @@ function AppContent() {
                                     </ReactFlowProvider>
                                 </div>
 
-                                <DataStructurePanel
-                                    type={dsType}
-                                    items={dsState}
-                                    distMatrix={distMatrix}
-                                    negativeCycleInfo={negativeCycleInfo}
-                                    algorithm={activeAlg}
-                                    flowInfo={flowInfo}
-                                    maxFlow={maxFlow}
-                                    sccList={sccList}
-                                    phase={phase}
-                                    activeK={activeK}
-                                    activeI={activeI}
-                                    activeJ={activeJ}
-                                />
+                                <div className={`ds-panel-wrapper ${visualizerMobileTab === 'canvas' ? 'mobile-hidden' : ''}`}>
+                                    <DataStructurePanel
+                                        type={dsType}
+                                        items={dsState}
+                                        distMatrix={distMatrix}
+                                        negativeCycleInfo={negativeCycleInfo}
+                                        algorithm={activeAlg}
+                                        flowInfo={flowInfo}
+                                        maxFlow={maxFlow}
+                                        sccList={sccList}
+                                        phase={phase}
+                                        activeK={activeK}
+                                        activeI={activeI}
+                                        activeJ={activeJ}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,25 +1,19 @@
-// Google Fonts
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-// 1. Tokens & Base Reset
 @import './variables';
 @import './base';
 
-// 2. Nodes & Edges
 @import './academic-node';
 
-// 3. Landing & Navigation
 @import './landing';
 @import './user-menu';
 
-// 4. Visualizer Core & Panels
 @import './visualizer';
 @import './pseudocode-panel';
 @import './datastructure-panel';
 @import './legend';
 @import './graph-editor';
 
-// 5. Modals & Extended Systems
 @import './auth-modal';
 @import './quiz-modal';
 @import './quiz-history-modal';

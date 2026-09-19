@@ -161,7 +161,10 @@ export default function AlgorithmMiniPreview({ algorithm }) {
 
                     <div className="mini-preview-footer">
                         <span className="queue-chip pq-chip">Min-Priority Queue</span>
-                        <span className="queue-items">Shortest Path Tree (SPT) · Relaxation: d[v] = min(d[v], d[u] + w)</span>
+                        <span className="queue-items">
+                            <span className="desktop-only-preview-text">Shortest Path Tree (SPT) · Relaxation: d[v] = min(d[v], d[u] + w)</span>
+                            <span className="mobile-only-preview-text">Relaxation: d[v] = min(d[v], d[u] + w)</span>
+                        </span>
                     </div>
                 </div>
             );

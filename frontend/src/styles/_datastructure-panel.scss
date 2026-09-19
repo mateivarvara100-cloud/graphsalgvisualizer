@@ -1,9 +1,14 @@
-// Data Structure Panel
-// ═══════════════════════════════════════════════════════════════
 .ds-panel {
     background: #ffffff;
     border-top: 1px solid #e2e8f0;
     padding: 12px 20px;
+
+    @media (max-width: 768px) {
+        padding: 12px 14px;
+        border-top: none;
+        height: 100%;
+        overflow-y: auto;
+    }
 
     .ds-header {
         display: flex;
@@ -79,7 +84,6 @@
         }
     }
 
-    // ── Disjoint Sets ──
     &.ds-panel-disjoint {
         .ds-body-sets {
             display: flex;
@@ -115,7 +119,6 @@
         }
     }
 
-    // ── Priority Queue ──
     &.ds-panel-pq {
         .ds-body-pq {
             display: flex;
@@ -184,7 +187,6 @@
         }
     }
 
-    // ── Distance Matrix (Floyd-Warshall) ──
     &.ds-panel-matrix {
         padding: 12px 16px;
 
@@ -322,7 +324,6 @@
         }
     }
 
-    // ── Flow Network Panel (Ford-Fulkerson) ──
     &.ds-panel-flow {
         .ds-header-left {
             display: flex;
@@ -548,7 +549,6 @@
         }
     }
 
-    // ── SCC Panel (Kosaraju & Tarjan) ──
     &.ds-panel-scc {
         .ds-header-left {
             display: flex;
@@ -730,5 +730,3 @@
         }
     }
 }
-
-// ═══════════════════════════════════════════════════════════════

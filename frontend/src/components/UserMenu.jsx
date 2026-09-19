@@ -47,21 +47,27 @@ export default function UserMenu({ className = '' }) {
         ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
         : user?.email ? user.email.slice(0, 2).toUpperCase() : 'U';
 
+    const displayName = user?.name || user?.email?.split('@')[0] || 'User';
+    const firstName = displayName.split(' ')[0];
+
     return (
         <div className={`user-menu-container ${className}`} ref={menuRef}>
             <button
                 className={`user-menu-trigger ${isOpen ? 'active' : ''}`}
                 onClick={() => setIsOpen(!isOpen)}
-                title="Account Menu"
+                title={displayName}
             >
                 <div className="user-avatar-badge">
                     {user?.picture ? (
-                        <img src={user.picture} alt={user.name || 'User'} className="user-avatar-img" />
+                        <img src={user.picture} alt={displayName} className="user-avatar-img" />
                     ) : (
                         <span className="user-avatar-initials">{initials}</span>
                     )}
                 </div>
-                <span className="user-trigger-name">{user?.name || user?.email?.split('@')[0]}</span>
+                <span className="user-trigger-name">
+                    <span className="user-name-full">{displayName}</span>
+                    <span className="user-name-short">{firstName}</span>
+                </span>
                 <svg className={`user-chevron ${isOpen ? 'open' : ''}`} width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>

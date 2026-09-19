@@ -62,6 +62,11 @@ Every algorithm runs step-by-step with state visualization, pseudocode highlight
 - Instant feedback with detailed explanations for correct and incorrect answers.
 - Score tracking persisted to user accounts via MongoDB.
 
+### 📱 100% Mobile Responsive & Touch Optimized
+- **Adaptive Layouts:** Flawlessly responsive across smartphones, tablets, laptops, and ultra-wide desktop monitors.
+- **Touch-Friendly Controls:** Smooth touch-pan, pinch-to-zoom, and tap interactions on the graph canvas.
+- **Mobile-Tailored UI:** Collapsible drawer navigation, floating action buttons with pulsating glowing indicators, bottom-right expandable legend, and swipe-friendly quiz modals.
+
 ### 🛡️ Production Security & Authentication
 - **OAuth 2.0:** One-click sign-in via Google Identity Services.
 - **Email/Password Auth:** Secure password hashing with `bcrypt` (work factor 12).
