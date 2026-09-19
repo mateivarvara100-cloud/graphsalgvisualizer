@@ -1,7 +1,3 @@
-# ==============================================================================
-# Git Ignore Configuration for Algorbit (Public Repository Ready)
-# ==============================================================================
-
 # Node / Frontend Dependencies & Builds
 node_modules/
 /frontend/node_modules/
