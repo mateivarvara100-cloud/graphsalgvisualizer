@@ -1,70 +1,212 @@
-# Getting Started with Create React App
+# Algorbit — Interactive Graph Algorithm Visualizer & AI Learning Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img src="frontend/public/logo.svg" alt="Algorbit Logo" width="96" height="96" />
+</p>
 
-## Available Scripts
+<p align="center">
+  <b>A full-stack, interactive graph theory visualization and learning platform with step-by-step execution, synchronized pseudocode, AI tutoring, and quizzes.</b>
+</p>
 
-In the project directory, you can run:
+<p align="center">
+  <a href="https://mateivarvara100-cloud.github.io/graphsalgvisualizer/"><strong>Explore the Live Demo »</strong></a>
+</p>
 
-### `npm start`
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black&style=flat-square" alt="React" />
+  <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white&style=flat-square" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white&style=flat-square" alt="Python" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white&style=flat-square" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Google_Gemini-AI_Tutor-4285F4?logo=google&logoColor=white&style=flat-square" alt="Gemini" />
+  <img src="https://img.shields.io/badge/GitHub_Pages-Hosted-222222?logo=github&logoColor=white&style=flat-square" alt="GitHub Pages" />
+  <img src="https://img.shields.io/badge/Render-Backend_Live-46E3B7?logo=render&logoColor=white&style=flat-square" alt="Render" />
+</p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🌐 Live Deployments
 
-### `npm test`
+- **Frontend (GitHub Pages):** [https://mateivarvara100-cloud.github.io/graphsalgvisualizer/](https://mateivarvara100-cloud.github.io/graphsalgvisualizer/)
+- **Backend API (Render):** [https://algorbit.onrender.com/](https://algorbit.onrender.com/)
+- **API Health Check:** [https://algorbit.onrender.com/api/health](https://algorbit.onrender.com/api/health)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## ✨ Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🎨 Interactive Graph Canvas
+- **Dynamic Manipulation:** Add, move, edit, and delete nodes and weighted/unweighted edges in real time.
+- **Support for All Graph Types:** Directed, undirected, weighted, and unweighted graphs with cycle and connectivity handling.
+- **Preset Libraries:** Load standard topology presets (Bipartite, Complete, Trees, Cycles, DAGs, Disconnected).
+- **Physics & Navigation:** Zoom, pan, snap-to-grid, and physics-assisted force simulation.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### ⚡ 9 Classical Graph Algorithms
+Every algorithm runs step-by-step with state visualization, pseudocode highlighting, and detailed step-by-step logs:
+1. **Breadth-First Search (BFS)** — Level-order traversal and shortest path in unweighted graphs.
+2. **Depth-First Search (DFS)** — Deep-path exploration, recursion stack tracing, cycle detection.
+3. **Dijkstra's Algorithm** — Single-source shortest path with minimum priority queue inspection.
+4. **Floyd-Warshall Algorithm** — All-pairs shortest path with dynamic programming distance matrix display.
+5. **Kruskal's Algorithm** — Minimum Spanning Tree (MST) with Disjoint Set Union (DSU) cycle checks.
+6. **Prim's Algorithm** — Minimum Spanning Tree (MST) via greedy cut-edge expansion.
+7. **Ford-Fulkerson** — Max flow computation using augmenting paths and residual graphs.
+8. **Edmonds-Karp** — BFS-optimized implementation of Ford-Fulkerson ensuring polynomial time.
+9. **Tarjan's & Kosaraju's Algorithms** — Strongly Connected Components (SCC) in directed graphs.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🤖 AI Learning Assistant
+- Integrated floating assistant powered by the Google Gemini API.
+- Explains current algorithm steps, graph properties, algorithmic time/space complexities, and proofs.
+- Markdown rendering with inline code and LaTeX math styling.
 
-### `npm run eject`
+### 📝 Interactive Quiz & Assessment System
+- Multiple-choice quizzes categorized by algorithm and difficulty level.
+- Instant feedback with detailed explanations for correct and incorrect answers.
+- Score tracking persisted to user accounts via MongoDB.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🛡️ Production Security & Authentication
+- **OAuth 2.0:** One-click sign-in via Google Identity Services.
+- **Email/Password Auth:** Secure password hashing with `bcrypt` (work factor 12).
+- **Session Tokens:** Stateless `JWT` (JSON Web Tokens) with cryptographically secure secret signing.
+- **Password Recovery:** 6-digit cryptographic OTP generation delivered via SMTP with expiration windows.
+- **Defense in Depth:**
+  - Rate limiting via sliding-window algorithm on compute-heavy routes.
+  - Granular CORS policies for production domains.
+  - HTTP Security Headers: Content Security Policy (CSP), Strict-Transport-Security (HSTS), X-Frame-Options, X-Content-Type-Options.
+  - Zero secrets committed: complete decoupling with `.env` and environment configuration.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🛠️ Architecture & Tech Stack
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+graphsalgvisualizer/
+├── .github/workflows/
+│   └── deploy.yml          # Automated CI/CD pipeline for GitHub Pages
+├── backend/
+│   ├── algorithms/         # Pure Python algorithm implementations (BFS, DFS, Dijkstra, etc.)
+│   ├── auth.py             # JWT token handling & bcrypt security
+│   ├── auth_routes.py      # Registration, login, password-reset, OAuth endpoints
+│   ├── assistant_routes.py # Gemini AI streaming/chat endpoint
+│   ├── database.py         # MongoDB connection & collection abstractions
+│   ├── email_service.py    # SMTP email delivery for OTP verification
+│   ├── quiz_routes.py      # Quiz questions, evaluation, and user score persistence
+│   ├── main.py             # FastAPI entrypoint, middleware, rate-limiters, algorithm endpoints
+│   └── requirements.txt    # Python dependencies
+└── frontend/
+    ├── public/             # Static assets, favicon, manifest, index.html
+    ├── src/
+    │   ├── components/     # Canvas, AI Assistant, Controls, Navbar, Modals
+    │   ├── context/        # React context (Auth, Quiz, Theme)
+    │   ├── hooks/          # Custom hooks (useGraphEditor, useAlgorithm, useViewport)
+    │   ├── styles/         # SCSS design system, dark-mode tokens, animations
+    │   └── App.jsx         # Root component & routing
+    └── package.json        # Frontend dependencies & scripts
+```
 
-## Learn More
+| Layer | Technology |
+|---|---|
+| **Frontend Framework** | React 18, JavaScript (ES6+), HTML5 Canvas |
+| **Styling** | Vanilla SCSS, CSS Modules, Custom Design Tokens |
+| **Icons & Media** | Lucide React, Custom Vector SVGs |
+| **Backend Framework** | FastAPI, Uvicorn, Pydantic v2 |
+| **Database** | MongoDB Atlas (Production) / `mongomock` (Fallback) |
+| **Authentication** | JWT (PyJWT), Bcrypt, Google OAuth 2.0 |
+| **AI Integration** | Google Generative Language API (Gemini 2.5 Flash) |
+| **Hosting & CI/CD** | GitHub Pages (Frontend), Render (Backend), GitHub Actions |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🚀 Getting Started Locally
 
-### Code Splitting
+### Prerequisites
+- **Node.js** v18+ and `npm`
+- **Python** 3.10+
+- **MongoDB** instance (local or MongoDB Atlas connection string)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+### 1. Clone the Repository
+```bash
+git clone https://github.com/mateivarvara100-cloud/graphsalgvisualizer.git
+cd graphsalgvisualizer
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### 2. Backend Setup
+```bash
+# Navigate to the backend directory
+cd backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Install dependencies
+pip install -r requirements.txt
 
-### Advanced Configuration
+# Create your .env file from the template
+cp .env.example .env
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Open `backend/.env` and supply your variables:
+```env
+ENVIRONMENT=development
+JWT_SECRET=your_jwt_secret_key
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/algorbit?retryWrites=true&w=majority
+GEMINI_API_KEY=your_gemini_api_key
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+```
 
-### Deployment
+Start the FastAPI backend server:
+```bash
+uvicorn main:app --reload --port 8000
+```
+Backend will be available at [http://localhost:8000](http://localhost:8000).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+### 3. Frontend Setup
+```bash
+# In a new terminal, navigate to the frontend directory
+cd frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Install npm dependencies
+npm install
+
+# Create your .env file from the template
+cp .env.example .env
+```
+
+Configure `frontend/.env`:
+```env
+REACT_APP_API_BASE_URL=http://localhost:8000
+```
+
+Run the development server:
+```bash
+npm start
+```
+Frontend will be available at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 🧪 Testing & Code Quality
+
+```bash
+# Run backend tests
+cd backend
+pytest
+
+# Check frontend linting
+cd frontend
+npm run lint
+```
+
+---
+
+## 📦 Deployment
+
+- **Frontend**: Automated via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Any push to `main` triggers a build and deploys to GitHub Pages.
+- **Backend**: Hosted on [Render](https://render.com) as a Python Web Service linked directly to the `backend/` directory of this repository.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — feel free to use it for learning, research, or personal projects.
