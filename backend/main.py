@@ -182,6 +182,15 @@ class FlowData(BaseModel):
 class SCCData(BaseModel):
     graph: Dict[str, List[str]]
 
+@app.get("/")
+@app.get("/api/health")
+def api_health():
+    return {
+        "message": "Algorbit Graph Algorithms Visualizer API is running",
+        "version": os.getenv("APP_VERSION", "1.0.0"),
+        "status": "healthy"
+    }
+
 @app.post("/api/bfs")
 def api_bfs(request: Request, data: GraphData):
     check_algo_rate_limit(request)

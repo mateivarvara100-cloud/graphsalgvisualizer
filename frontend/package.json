@@ -1,6 +1,7 @@
 {
   "name": "graphsalgvisualizer",
   "version": "0.1.0",
+  "homepage": "https://mateivarvara100-cloud.github.io/graphsalgvisualizer",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
