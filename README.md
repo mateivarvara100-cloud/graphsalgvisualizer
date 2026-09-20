@@ -210,8 +210,4 @@ npm run lint
 - **Frontend**: Automated via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Any push to `main` triggers a build and deploys to GitHub Pages.
 - **Backend**: Hosted on [Render](https://render.com) as a Python Web Service linked directly to the `backend/` directory of this repository.
 
----
 
-## 📄 License
-
-This project is licensed under the MIT License — feel free to use it for learning, research, or personal projects.
