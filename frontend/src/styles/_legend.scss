@@ -405,7 +405,9 @@
 
 @media (max-width: 768px) {
     .legend-container {
-        bottom: 14px;
+        bottom: calc(34px + env(safe-area-inset-bottom, 0px));
+        // Keep the button above Safari's toolbar when the 100vh canvas exceeds the visible viewport.
+        bottom: calc(34px + env(safe-area-inset-bottom, 0px) + 100vh - 100dvh);
         right: 14px;
         left: auto;
 
